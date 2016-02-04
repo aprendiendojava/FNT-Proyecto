@@ -8,7 +8,9 @@ import com.wpsnetwork.dao.interfaces.Indexado;
 public abstract class RepositorioMemoriaDao<ENTIDAD extends Indexado> implements Dao<ENTIDAD> {
 	private List<ENTIDAD> datosEnMemoria;
 
-	protected RepositorioMemoriaDao( List<ENTIDAD> datosEnMemoria ) { this.datosEnMemoria = datosEnMemoria; }
+	protected RepositorioMemoriaDao( List<ENTIDAD> datosEnMemoria ) {
+		this.datosEnMemoria = datosEnMemoria;
+	}
 
 	public ENTIDAD get( int id ) {
 		return datosEnMemoria.stream().filter( elm -> elm.getId() == id ).findAny().get();

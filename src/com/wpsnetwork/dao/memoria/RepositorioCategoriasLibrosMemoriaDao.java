@@ -12,5 +12,8 @@ public final class RepositorioCategoriasLibrosMemoriaDao extends RepositorioMemo
 		categorias.add( new CategoriaLibro( "Drama" ));
 		categorias.add( new CategoriaLibro( "Poesía" ));
 	}
-	public RepositorioCategoriasLibrosMemoriaDao() { super(categorias); }
+
+	public RepositorioCategoriasLibrosMemoriaDao() {
+		super(categorias);
+	}
 }

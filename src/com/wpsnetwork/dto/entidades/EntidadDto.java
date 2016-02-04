@@ -9,5 +9,5 @@ public class EntidadDto <ENTIDAD extends Indexado> implements Indexado {
 	public void setEntidad( ENTIDAD entidad ) { this.entidad = entidad; }
 
 	@Override
-	public int getId() { return this.getId(); }
+	public int getId() { return entidad.getId(); }
 }

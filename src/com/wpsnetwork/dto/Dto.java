@@ -43,6 +43,6 @@ public class Dto<REPO extends Dao<ENTIDAD>, ENT_DTO extends EntidadDto<ENTIDAD>,
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public List<ENTIDAD> imprimir() { return repositorio.getAll(); }
 
+	public List<ENTIDAD> imprimir() { return repositorio.getAll(); }
 }

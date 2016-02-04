@@ -1,20 +1,11 @@
 package com.wpsnetwork.dao.entidades;
 
-import com.wpsnetwork.dao.interfaces.Indexado;
-
-public class CategoriaLibro implements Indexado {
+public final class CategoriaLibro extends EntidadIndexada {
 	private static int sequence = 0;
-	private int id;
 	private String nombre;
 
 	public CategoriaLibro( String nombre ) {
 		this.id = sequence++;
 		this.nombre = nombre;
 	}
-
-	public int        getId() { return id; }
-	public String getNombre() { return nombre; }
-
-	protected void     setId( int id )        { this.id = id; }
-	protected void setNombre( String nombre ) { this.nombre = nombre; }
 }

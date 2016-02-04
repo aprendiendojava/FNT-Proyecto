@@ -8,5 +8,8 @@ import com.wpsnetwork.dao.entidades.Prestamo;
 
 public final class RepositorioPrestamosMemoriaDao extends RepositorioMemoriaDao<Prestamo> {
 	private static List<Prestamo> prestamos = new ArrayList<>();
-	public RepositorioPrestamosMemoriaDao() { super(prestamos); }
+
+	public RepositorioPrestamosMemoriaDao() {
+		super(prestamos);
+	}
 }

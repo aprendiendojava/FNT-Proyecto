@@ -4,5 +4,7 @@ import com.wpsnetwork.dao.memoria.RepositorioPersonasMemoriaDao;
 import com.wpsnetwork.dto.entidades.Persona;
 
 public class PersonasDto extends Dto<RepositorioPersonasMemoriaDao,Persona,com.wpsnetwork.dao.entidades.Persona> {
-	public PersonasDto() { super( new RepositorioPersonasMemoriaDao(),new Persona()); }
+	public PersonasDto() {
+		super( new RepositorioPersonasMemoriaDao(), new Persona());
+	}
 }

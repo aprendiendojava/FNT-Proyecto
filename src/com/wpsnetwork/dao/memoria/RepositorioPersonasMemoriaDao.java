@@ -11,5 +11,7 @@ public final class RepositorioPersonasMemoriaDao extends RepositorioMemoriaDao<P
 		personas.add( new Persona( "FerN" ));
 	}
 
-	public RepositorioPersonasMemoriaDao() { super(personas); }
+	public RepositorioPersonasMemoriaDao() {
+		super(personas);
+	}
 }

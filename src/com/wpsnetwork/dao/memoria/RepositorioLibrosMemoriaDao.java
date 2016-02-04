@@ -10,5 +10,8 @@ public final class RepositorioLibrosMemoriaDao extends RepositorioMemoriaDao<Lib
 	static {
 		libros.add(new Libro( "Moby Dick" ));
 	}
-	public RepositorioLibrosMemoriaDao() { super(libros); }
+
+	public RepositorioLibrosMemoriaDao() {
+		super(libros);
+	}
 }

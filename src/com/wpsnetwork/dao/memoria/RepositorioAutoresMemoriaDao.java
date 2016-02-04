@@ -12,5 +12,7 @@ public final class RepositorioAutoresMemoriaDao extends RepositorioMemoriaDao<Au
 		autores.add(new Autor( "Charles Baudelaire" ));
 	}
 
-	public RepositorioAutoresMemoriaDao() { super( autores ); }
+	public RepositorioAutoresMemoriaDao() {
+		super( autores );
+	}
 }
