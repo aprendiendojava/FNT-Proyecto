@@ -32,6 +32,4 @@ public abstract class RepositorioMemoriaDao<ENTIDAD extends Indexado> implements
 	public List<ENTIDAD> getAll() {
 		return datosEnMemoria;
 	}
-
-	public String imprimir() { return "" + datosEnMemoria.size(); }
 }

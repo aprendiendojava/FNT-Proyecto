@@ -6,7 +6,7 @@ import com.wpsnetwork.dao.interfaces.Dao;
 import com.wpsnetwork.dao.interfaces.Indexado;
 import com.wpsnetwork.dto.entidades.EntidadDto;
 
-public class Dto<REPO extends Dao<ENTIDAD>, ENT_DTO extends EntidadDto<ENTIDAD>, ENTIDAD extends Indexado> implements Dao<ENT_DTO> {
+public abstract class Dto<REPO extends Dao<ENTIDAD>, ENT_DTO extends EntidadDto<ENTIDAD>, ENTIDAD extends Indexado> implements Dao<ENT_DTO> {
 	private REPO repositorio;
 	private ENT_DTO ent_dto;
 

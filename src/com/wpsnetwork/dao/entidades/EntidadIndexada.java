@@ -6,7 +6,7 @@ public abstract class EntidadIndexada implements Indexado {
 	protected int id;
 
 	@Override
-    public int getId() {
+    public final int getId() {
     	return id;
     }
 }
