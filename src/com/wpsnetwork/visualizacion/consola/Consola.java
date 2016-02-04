@@ -25,7 +25,7 @@ public class Consola {
 
 		libro = new Libro( "La amabilidad de los extraños" );
 		libros.insert(libro);
-		imprimir( libros );		
+		imprimir( libros );
 	}
 
 	private static void imprimir( Dto objetos ) {

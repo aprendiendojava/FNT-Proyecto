@@ -1,19 +1,22 @@
 package com.wpsnetwork.dto;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.stream.Collectors;
 
 import com.wpsnetwork.dao.interfaces.Dao;
 import com.wpsnetwork.dao.interfaces.Indexado;
 import com.wpsnetwork.dto.entidades.EntidadDto;
 
-public abstract class Dto<REPO extends Dao<ENTIDAD>, ENT_DTO extends EntidadDto<ENTIDAD>, ENTIDAD extends Indexado> implements Dao<ENT_DTO> {
+public class Dto<REPO extends Observable & Dao<ENTIDAD>, ENT_DTO extends EntidadDto<ENTIDAD>, ENTIDAD extends Indexado> implements Dao<ENT_DTO>, Observer {
 	private final REPO repositorio;
 	private final ENT_DTO ent_dto;
 
 	public Dto( REPO repositorio, ENT_DTO ent_dto ) {
-		this.repositorio = repositorio;
 		this.ent_dto = ent_dto;
+		this.repositorio = repositorio;
+		repositorio.addObserver(this);
 	}
 
 	protected REPO getRepositorio() { return repositorio; }
@@ -49,5 +52,10 @@ public abstract class Dto<REPO extends Dao<ENTIDAD>, ENT_DTO extends EntidadDto<
 			clon.setEntidad(entidad);
 			return clon;
 		}).collect(Collectors.toList());		
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		System.out.println(" ¡SE HA ACTUALIZADO EL REPOSITORIO! ");
 	}
 }
