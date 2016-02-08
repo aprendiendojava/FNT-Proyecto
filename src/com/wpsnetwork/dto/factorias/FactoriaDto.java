@@ -1,8 +1,11 @@
 package com.wpsnetwork.dto.factorias;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import com.wpsnetwork.dao.entidades.Autor;
 import com.wpsnetwork.dao.entidades.CategoriaLibro;
@@ -16,7 +19,7 @@ import com.wpsnetwork.dao.memoria.RepositorioMemoriaDao;
 import com.wpsnetwork.dto.Dto;
 
 public final class FactoriaDto {
-	private FactoriaDto() {}
+	private static Class<? extends Dao> defaultDao;
 	private static Map<String,Class<? extends Dao>> repositorios = new HashMap<>();
 	private static Map<String,Class<? extends EntidadIndexada>> entidades = new HashMap<>();
 	static {
@@ -26,24 +29,40 @@ public final class FactoriaDto {
 		entidades.put( "LIBRO", Libro.class );
 		entidades.put( "PERSONA", Persona.class );
 		entidades.put( "PRESTAMO", Prestamo.class );
+		defaultDao = getDefaultDao();
+	}
+
+	private FactoriaDto() {}
+
+	public static <E extends EntidadIndexada> Dto<E> getInstance( String entidad ) {
+		return getInstance( defaultDao, entidades.get(entidad));
+	}
+
+	public static <E extends EntidadIndexada> Dto<E> getInstance( String repositorio, String entidad ) {
+		return getInstance(repositorios.get(repositorio), entidades.get(entidad));
 	}
 
 	public static <E extends EntidadIndexada> Dto<E> getInstance( Class<? extends Dao<E>> tipoRepositorio )
 	{
 		return getInstance( tipoRepositorio, (Class<E>)((ParameterizedType) tipoRepositorio.getGenericSuperclass()).getActualTypeArguments()[0]);
 	}
-	public static <E extends EntidadIndexada> Dto<E> getInstance( String entidad ) {
-		return getInstance( repositorios.get("MEMORIA"), entidades.get(entidad));
-	}
 
-	public static <E extends EntidadIndexada> Dto<E> getInstance( String repositorio, String entidad ) {
-		return getInstance(repositorios.get(repositorio), entidades.get(entidad));
-	}
 	public static <E extends EntidadIndexada> Dto<E> getInstance( Class<? extends Dao> tipoRepositorio, String entidad ) {
 		return getInstance(tipoRepositorio, entidades.get(entidad));
 	}
 
 	public static <E extends EntidadIndexada> Dto<E> getInstance( Class<? extends Dao> tipoRepositorio, Class<? extends EntidadIndexada> tipoEntidad ) {
 		return new Dto<>( FactoriaDao.getInstance( tipoRepositorio, tipoEntidad ));
+	}
+
+	private static Class<? extends Dao> getDefaultDao() {
+		Properties configuracion = new Properties();
+		try {
+			configuracion.load(new FileReader( "src/com/wpsnetwork/aplicacion.properties"));
+			return repositorios.get( configuracion.getProperty("dao.acceso"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
 	}
 }

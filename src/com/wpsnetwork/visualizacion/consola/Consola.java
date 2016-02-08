@@ -3,7 +3,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.wpsnetwork.dao.factorias.FactoriaDao;
-import com.wpsnetwork.dao.memoria.RepositorioAutoresMemoriaDao;
 import com.wpsnetwork.dao.memoria.RepositorioMemoriaDao;
 import com.wpsnetwork.dto.AutoresDto;
 import com.wpsnetwork.dto.Dto;
@@ -16,7 +15,7 @@ public final class Consola {
 
 	public static void main( String...strings ) {
 		Dto<com.wpsnetwork.dao.entidades.Autor> autores =
-				FactoriaDto.getInstance( RepositorioAutoresMemoriaDao.class );
+				FactoriaDto.getInstance( "AUTOR" );
 		logConsola.trace( imprimir( autores ));
 
 		Autor autor = new Autor( new com.wpsnetwork.dao.entidades.Autor( "Julio Cortazar" ));
