@@ -5,57 +5,57 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.wpsnetwork.dao.entidades.EntidadIndexada;
 import com.wpsnetwork.dao.interfaces.Dao;
-import com.wpsnetwork.dao.interfaces.Indexado;
+import com.wpsnetwork.dao.memoria.RepositorioMemoriaDao;
 import com.wpsnetwork.dto.entidades.EntidadDto;
 
-public class Dto<REPO extends Observable & Dao<ENTIDAD>, ENT_DTO extends EntidadDto<ENTIDAD>, ENTIDAD extends Indexado> implements Dao<ENT_DTO>, Observer {
-	private final REPO repositorio;
-	private final ENT_DTO ent_dto;
+public class Dto<ENTIDAD extends EntidadIndexada> implements Dao<EntidadDto<ENTIDAD>>, Observer {
+	private static final Logger logDto = LogManager.getLogger( Dto.class );
+	private final RepositorioMemoriaDao<ENTIDAD> repositorio;
 
-	public Dto( REPO repositorio, ENT_DTO ent_dto ) {
-		this.ent_dto = ent_dto;
-		this.repositorio = repositorio;
-		repositorio.addObserver(this);
-	}
-
-	protected REPO getRepositorio() { return repositorio; }
-
-	@Override
-	public ENT_DTO get(int id) {
-		ENT_DTO clon = (ENT_DTO) ent_dto.clone();
-		clon.setEntidad( repositorio.get(id));
-		return clon;
+	public <REPO extends Dao<ENTIDAD>> Dto( REPO repositorio ) {
+		this.repositorio = (RepositorioMemoriaDao<ENTIDAD>) repositorio;
+		this.repositorio.addObserver( this );
 	}
 
 	@Override
-	public void insert(ENT_DTO element) {
+	public EntidadDto<ENTIDAD> get( int id ) {
+		EntidadDto<ENTIDAD> entDto = new EntidadDto<ENTIDAD>( repositorio.get(id));
+		return entDto;
+	}
+
+	@Override
+	public void insert( EntidadDto<ENTIDAD> element ) {
 		repositorio.insert( element.getEntidad());
 	}
 
 	@Override
-	public void update(ENT_DTO element) {
+	public void update( EntidadDto<ENTIDAD> element ) {
 		repositorio.update( element.getEntidad());
 	}
 
 	@Override
-	public void delete(ENT_DTO element) {
+	public void delete( EntidadDto<ENTIDAD> element ) {
 		repositorio.delete( element.getEntidad());
 	}
 
 	@Override
-	public List<ENT_DTO> getAll() {
+	public List<EntidadDto<ENTIDAD>> getAll() {
 		List<ENTIDAD> entidades = repositorio.getAll();
 
 		return entidades.stream().map( entidad -> {
-			ENT_DTO clon = (ENT_DTO) ent_dto.clone();
-			clon.setEntidad(entidad);
-			return clon;
+			EntidadDto<ENTIDAD> entDto = new EntidadDto<ENTIDAD>( entidad );
+			return entDto;
 		}).collect(Collectors.toList());		
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println(" ¡SE HA ACTUALIZADO EL REPOSITORIO! ");
+		logDto.trace( o.getClass().getName() 
+					+ " @ " + arg==null?"":( arg.getClass().getName() + ": " + arg )) ;
 	}
 }

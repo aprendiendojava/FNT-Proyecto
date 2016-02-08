@@ -1,10 +1,10 @@
 package com.wpsnetwork.dto;
 
-import com.wpsnetwork.dao.memoria.RepositorioAutoresMemoriaDao;
-import com.wpsnetwork.dto.entidades.Autor;
+import com.wpsnetwork.dao.entidades.Autor;
+import com.wpsnetwork.dao.interfaces.Dao;
 
-public final class AutoresDto extends Dto<RepositorioAutoresMemoriaDao,Autor,com.wpsnetwork.dao.entidades.Autor> {
-	public AutoresDto() {
-		super( new RepositorioAutoresMemoriaDao(), new Autor());
+public final class AutoresDto extends Dto<Autor> {
+	public AutoresDto( Dao<Autor> repositorio ) {
+		super( repositorio );
 	}
 }

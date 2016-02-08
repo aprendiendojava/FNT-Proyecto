@@ -1,10 +1,10 @@
 package com.wpsnetwork.dto;
 
-import com.wpsnetwork.dao.memoria.RepositorioLibrosMemoriaDao;
-import com.wpsnetwork.dto.entidades.Libro;
+import com.wpsnetwork.dao.entidades.Libro;
+import com.wpsnetwork.dao.interfaces.Dao;
 
-public final class LibrosDto extends Dto<RepositorioLibrosMemoriaDao,Libro,com.wpsnetwork.dao.entidades.Libro> {
-	public LibrosDto() {
-		super( new RepositorioLibrosMemoriaDao(), new Libro());
+public final class LibrosDto extends Dto<Libro> {
+	public LibrosDto( Dao<Libro> repositorio ) {
+		super( repositorio );
 	}
 }

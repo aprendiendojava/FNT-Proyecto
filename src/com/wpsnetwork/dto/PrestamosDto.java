@@ -1,10 +1,10 @@
 package com.wpsnetwork.dto;
 
-import com.wpsnetwork.dao.memoria.RepositorioPrestamosMemoriaDao;
-import com.wpsnetwork.dto.entidades.Prestamo;
+import com.wpsnetwork.dao.entidades.Prestamo;
+import com.wpsnetwork.dao.interfaces.Dao;
 
-public final class PrestamosDto extends Dto<RepositorioPrestamosMemoriaDao,Prestamo,com.wpsnetwork.dao.entidades.Prestamo> {
-	public PrestamosDto() {
-		super( new RepositorioPrestamosMemoriaDao(), new Prestamo());
+public final class PrestamosDto extends Dto<Prestamo> {
+	public PrestamosDto( Dao<Prestamo> repositorio ) {
+		super( repositorio );
 	}
 }
