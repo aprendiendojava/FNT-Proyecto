@@ -1,6 +1,10 @@
 package com.wpsnetwork.dao.entidades;
 
-public final class Autor extends EntidadIndexada {
+import java.io.Serializable;
+
+import com.google.gson.Gson;
+
+public final class Autor extends EntidadIndexada implements Serializable {
 	private String nombre;
 
 	public Autor( String nombre ) {
@@ -8,6 +12,7 @@ public final class Autor extends EntidadIndexada {
 	}
 
 	public String toString() {
-		return getId() + " : Nombre:" + nombre;
+		return new Gson().toJson(this);
+		//return getId() + " : Nombre:" + nombre;
 	}
 }

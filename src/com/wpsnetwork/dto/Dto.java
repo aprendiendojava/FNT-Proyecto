@@ -10,16 +10,17 @@ import org.apache.logging.log4j.Logger;
 
 import com.wpsnetwork.dao.entidades.EntidadIndexada;
 import com.wpsnetwork.dao.interfaces.Dao;
-import com.wpsnetwork.dao.memoria.RepositorioMemoriaDao;
 import com.wpsnetwork.dto.entidades.EntidadDto;
 
 public class Dto<ENTIDAD extends EntidadIndexada> implements Dao<EntidadDto<ENTIDAD>>, Observer {
 	private static final Logger logDto = LogManager.getLogger( Dto.class );
-	private final RepositorioMemoriaDao<ENTIDAD> repositorio;
+	private final Dao<ENTIDAD> repositorio;
 
 	public <REPO extends Dao<ENTIDAD>> Dto( REPO repositorio ) {
-		this.repositorio = (RepositorioMemoriaDao<ENTIDAD>) repositorio;
-		this.repositorio.addObserver( this );
+		this.repositorio = (Dao<ENTIDAD>) repositorio;
+
+		if ( repositorio instanceof Observable )
+			((Observable)this.repositorio).addObserver( this );
 	}
 
 	@Override

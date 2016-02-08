@@ -3,6 +3,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.wpsnetwork.dao.factorias.FactoriaDao;
+import com.wpsnetwork.dao.fichero.RepositorioFicheroDao;
+import com.wpsnetwork.dao.memoria.RepositorioAutoresMemoriaDao;
 import com.wpsnetwork.dao.memoria.RepositorioMemoriaDao;
 import com.wpsnetwork.dto.AutoresDto;
 import com.wpsnetwork.dto.Dto;
@@ -15,7 +17,7 @@ public final class Consola {
 
 	public static void main( String...strings ) {
 		Dto<com.wpsnetwork.dao.entidades.Autor> autores =
-				FactoriaDto.getInstance( "AUTOR" );
+				FactoriaDto.getInstance( RepositorioAutoresMemoriaDao.class );
 		logConsola.trace( imprimir( autores ));
 
 		Autor autor = new Autor( new com.wpsnetwork.dao.entidades.Autor( "Julio Cortazar" ));
@@ -51,8 +53,10 @@ public final class Consola {
 				FactoriaDto.getInstance( "MEMORIA", "CATEGORIA" );
 		logConsola.trace( imprimir( categorias ));
 
-//		Dto.connect( autores, )
-		//Dto<LibroNNAutor> librosNNautores = FactoriaDto.getInstance( RepositorioLibrosNNAutores.class, LibroNNAutor.class );
+		Dto<com.wpsnetwork.dao.entidades.Autor> autoresFichero =
+				FactoriaDto.getInstance( RepositorioFicheroDao.class, com.wpsnetwork.dao.entidades.Autor.class );
+		//autores.getAll().stream().forEach( a -> autoresFichero.insert(a));
+		System.out.println("VVVVVVVVVVVVVVVVVVV"+autores.get(1));
 	}
 
 	private static String imprimir( Dto<?> objetos ) {
