@@ -12,11 +12,4 @@ public final class Libro extends EntidadIndexada {
 		this.editorial = editorial;
 		this.edicion = edicion;
 	}
-
-	public String toString() {
-		return getId() + " : Título:" + titulo
-				+ ", Páginas:" + paginas
-				+ ", Editorial:" + editorial
-				+ ", Edición:" + edicion;
-	}
 }

@@ -2,11 +2,7 @@ package com.wpsnetwork.visualizacion.consola;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.wpsnetwork.dao.factorias.FactoriaDao;
-import com.wpsnetwork.dao.fichero.RepositorioFicheroDao;
 import com.wpsnetwork.dao.memoria.RepositorioAutoresMemoriaDao;
-import com.wpsnetwork.dao.memoria.RepositorioMemoriaDao;
-import com.wpsnetwork.dto.AutoresDto;
 import com.wpsnetwork.dto.Dto;
 import com.wpsnetwork.dto.entidades.Autor;
 import com.wpsnetwork.dto.entidades.Libro;
@@ -17,7 +13,7 @@ public final class Consola {
 
 	public static void main( String...strings ) {
 		Dto<com.wpsnetwork.dao.entidades.Autor> autores =
-				FactoriaDto.getInstance( RepositorioAutoresMemoriaDao.class );
+				FactoriaDto.forRepo( RepositorioAutoresMemoriaDao.class );
 		logConsola.trace( imprimir( autores ));
 
 		Autor autor = new Autor( new com.wpsnetwork.dao.entidades.Autor( "Julio Cortazar" ));
@@ -25,8 +21,9 @@ public final class Consola {
 		logConsola.trace( imprimir( autores ));
 
 		Dto<com.wpsnetwork.dao.entidades.Autor> autores2 =
-				FactoriaDto.getInstance( "MEMORIA", "AUTOR" );
-		AutoresDto autores3 = new AutoresDto( FactoriaDao.getInstance( RepositorioMemoriaDao.class, com.wpsnetwork.dao.entidades.Autor.class ));
+				FactoriaDto.forEntity( "AUTOR" );
+		Dto<com.wpsnetwork.dao.entidades.Autor> autores3 =
+				FactoriaDto.forEntity( com.wpsnetwork.dao.entidades.Autor.class );
 		logConsola.trace( imprimir( autores ));
 		logConsola.trace( "AUTORES 2" + imprimir( autores2 ));
 		logConsola.trace( "AUTORES 3" + imprimir( autores3 ));
@@ -40,7 +37,7 @@ public final class Consola {
 		logConsola.trace( imprimir( autores ));
 
 		Dto<com.wpsnetwork.dao.entidades.Libro> libros =
-				FactoriaDto.getInstance( "MEMORIA", "LIBRO" );
+				FactoriaDto.forEntity( "LIBRO" );
 		Libro libro = new Libro( new com.wpsnetwork.dao.entidades.Libro( "Rayuela", 400, "Editorial1", 14 ));
 		libros.insert( libro );
 		logConsola.trace( imprimir( libros ));
@@ -50,13 +47,8 @@ public final class Consola {
 		logConsola.trace( imprimir( libros ));
 
 		Dto<com.wpsnetwork.dao.entidades.CategoriaLibro> categorias =
-				FactoriaDto.getInstance( "MEMORIA", "CATEGORIA" );
-		logConsola.trace( imprimir( categorias ));
-
-		Dto<com.wpsnetwork.dao.entidades.Autor> autoresFichero =
-				FactoriaDto.getInstance( RepositorioFicheroDao.class, com.wpsnetwork.dao.entidades.Autor.class );
-		//autores.getAll().stream().forEach( a -> autoresFichero.insert(a));
-		System.out.println("VVVVVVVVVVVVVVVVVVV"+autores.get(1));
+				FactoriaDto.forEntity( "CATEGORIA" );
+		logConsola.trace( imprimir( categorias ));		
 	}
 
 	private static String imprimir( Dto<?> objetos ) {

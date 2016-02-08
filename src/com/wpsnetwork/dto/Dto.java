@@ -56,7 +56,6 @@ public class Dto<ENTIDAD extends EntidadIndexada> implements Dao<EntidadDto<ENTI
 
 	@Override
 	public void update(Observable o, Object arg) {
-		logDto.trace( o.getClass().getName() 
-					+ " @ " + arg==null?"":( arg.getClass().getName() + ": " + arg )) ;
+		logDto.trace(( o.getClass().getName() + " @ " + ( arg==null?"":( arg.getClass().getName() + ": " + arg ))));
 	}
 }

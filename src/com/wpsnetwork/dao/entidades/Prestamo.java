@@ -16,13 +16,4 @@ public final class Prestamo extends EntidadIndexada {
 		this.libro = libro;
 		this.persona = persona;
 	}
-
-	public String toString() {
-		return getId()
-				+ " : FechaInicio:" + fechaInicio
-				+ ", FechaFin:" + fechaFin
-				+ ", Devuelto:" + devuelto
-				+ ", Libro:" + libro
-				+ ", Persona:" + persona;
-	}
 }

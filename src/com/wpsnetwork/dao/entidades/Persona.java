@@ -22,16 +22,4 @@ public final class Persona extends EntidadIndexada {
 		this.pais = pais;
 		this.codigoPostal = codigoPostal;
 	}
-
-	public String toString() {
-		return getId()
-				+ " : Nombre:" + nombre
-				+ ", Dni:" + dni
-				+ ", FechaNacimiento:" + fechaNacimiento
-				+ ", Dirección:" + direccion
-				+ ", Teléfono:" + telefono
-				+ ", Provincia:" + provincia
-				+ ", País:" + pais
-				+ ", CódigoPostal:" + codigoPostal;
-	}
 }

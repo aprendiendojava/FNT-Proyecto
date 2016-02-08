@@ -6,8 +6,4 @@ public final class CategoriaLibro extends EntidadIndexada {
 	public CategoriaLibro( String nombre ) {
 		this.nombre = nombre;
 	}
-
-	public String toString() {
-		return getId() + " : Nombre:" + nombre;
-	}
 }
