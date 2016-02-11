@@ -73,7 +73,7 @@ WRITE OPERATIONS
 	Go back to HEAD
 		Right -> Team -> Switch to -> master
 
-	Restauración y sobreescritura
+	RestauraciÃ³n y sobreescritura
 		Reset hard
 		Push force
 		Recuperar ficheros eliminados
@@ -85,3 +85,4 @@ WRITE OPERATIONS
 
 
 http://stackoverflow.com/questions/3689838/difference-between-head-working-tree-index-in-git
+.
