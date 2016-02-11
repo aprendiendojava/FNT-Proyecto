@@ -1,0 +1,87 @@
+INIT OPERATIONS
+TERMINOLOGY
+	INIT	"git init"
+	CLONE	"git clone"
+
+
+READ OPERATIONS
+Terminology
+	REVISION & COMMIT
+	HISTORY
+
+
+History and Revisions
+
+Changes in one REVISION		
+- Right -> Team -> Show in history
+
+	{IN HISTORY VIEW}
+	Select two revisions -> Compare with eachother
+
+
+
+
+
+
+	TERMINOLOGY
+		LOCAL VS REMOTE
+
+	{IN HISTORY VIEW}
+	In commits track OBSERVE master & origin/master labels
+
+
+
+
+
+
+	TERMINOLOGY
+		WORKING TREE VS INDEX VS HEAD
+
+	{IN HISTORY VIEW}
+	Right(on any file) -> Compare with Workspace
+
+
+
+
+
+
+	TERMINOLOGY
+		BRANCHES
+		LOCAL & REMOTE are simply BRANCHES
+
+	Compare with REMOTE
+	-...
+
+
+WRITE OPERATIONS
+
+	TERMINOLOGY
+		INDEX
+		COMMIT & AUTHOR & MESSAGE = REVISION
+
+	
+
+
+
+
+	COMMIT
+	PUSH
+	FETCH
+	MERGE
+
+
+	Go back to HEAD
+		Right -> Team -> Switch to -> master
+
+	Restauración y sobreescritura
+		Reset hard
+		Push force
+		Recuperar ficheros eliminados
+			Right -> ReplaceWith -> HEAD Revision
+
+	Tag
+		Major versions, milestones, achievements, etc
+
+
+
+http://stackoverflow.com/questions/3689838/difference-between-head-working-tree-index-in-git
