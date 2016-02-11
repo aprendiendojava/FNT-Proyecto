@@ -1,5 +1,8 @@
 package com.wpsnetwork.dao.entidades;
 
+import javax.persistence.Entity;
+
+@Entity
 public final class Autor extends EntidadIndexada {
 	private String nombre;
 

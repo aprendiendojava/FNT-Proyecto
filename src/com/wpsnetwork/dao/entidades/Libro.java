@@ -1,5 +1,8 @@
 package com.wpsnetwork.dao.entidades;
 
+import javax.persistence.Entity;
+
+@Entity
 public final class Libro extends EntidadIndexada {
 	private String titulo;
 	private int    paginas;

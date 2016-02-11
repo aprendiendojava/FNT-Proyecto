@@ -1,13 +1,47 @@
 package com.wpsnetwork.dao.factorias;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import com.wpsnetwork.dao.entidades.EntidadIndexada;
+import com.wpsnetwork.dao.fichero.RepositorioFicheroDao;
+import com.wpsnetwork.dao.hibernate.RepositorioHibernateDao;
 import com.wpsnetwork.dao.interfaces.Dao;
+import com.wpsnetwork.dao.memoria.RepositorioMemoriaDao;
 
 public class FactoriaDao {
+	private static Class<? extends Dao> defaultDao;
 	private static Map<RepoEntidad,Dao> repositorios = new HashMap<>();
+	private static Map<String,Class<? extends Dao>> repos = new HashMap<>();
+
+	static {
+		repos.put( "HIBERNATE", RepositorioHibernateDao.class );
+		repos.put( "MEMORIA", RepositorioMemoriaDao.class );
+		repos.put( "FICHERO", RepositorioFicheroDao.class );
+		defaultDao = getDefaultDao();
+	}
+
+	private static Class<? extends Dao> getDefaultDao() {
+		Properties configuracion = new Properties();
+		try {
+			configuracion.load(new FileReader( "src/com/wpsnetwork/aplicacion.properties" ));
+			return repos.get( configuracion.getProperty("dao.acceso"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
+	}
+
+	public static <E extends EntidadIndexada> Dao<E> forEntity( Class<? extends EntidadIndexada> tipoEntidad ) {
+		return getInstance( defaultDao, tipoEntidad );
+	}
+
+	public static <E extends EntidadIndexada> Dao<E> getInstance( String repositorio, Class<? extends EntidadIndexada> tipoEntidad ) {
+		return getInstance( repos.get(repositorio), tipoEntidad );
+	}
 
 	public static <E extends EntidadIndexada> Dao<E> getInstance( Class<? extends Dao> tipoRepositorio, Class<? extends EntidadIndexada> tipoEntidad )
 	{

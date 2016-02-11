@@ -19,7 +19,6 @@ public class EntidadDto <ENTIDAD extends EntidadIndexada> implements Indexado {
 	}
 
 	public void updateEntidad( ENTIDAD entidad ) {
-		entidad.setId(this.entidad.getId());
 		this.entidad = entidad;
 	}
 

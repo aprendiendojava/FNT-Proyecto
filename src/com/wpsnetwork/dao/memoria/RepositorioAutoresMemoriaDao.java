@@ -10,6 +10,8 @@ public final class RepositorioAutoresMemoriaDao extends RepositorioMemoriaDao<Au
 	static {
 		autores.add(new Autor( "Herman Melville" ));
 		autores.add(new Autor( "Charles Baudelaire" ));
+		autores.add(new Autor( "Gabriel García Márquez" ));
+		autores.add(new Autor( "Pablo Neruda" ));
 	}
 
 	public RepositorioAutoresMemoriaDao() {
