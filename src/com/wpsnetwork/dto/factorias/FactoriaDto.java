@@ -24,30 +24,33 @@ public final class FactoriaDto {
 		entidades.put( "PRESTAMO", Prestamo.class );
 	}
 
+	private static <E extends EntidadIndexada> Class<E> getEntidad( String entidad ) {
+		return (Class<E>) entidades.get(entidad);
+	}
 	private FactoriaDto() {}
 
 	public static <E extends EntidadIndexada> Dto<E> forEntity( String entidad ) {
-		return new Dto<E>( FactoriaDao.forEntity( entidades.get( entidad )));
+		return new Dto<E>( FactoriaDao.forEntity( getEntidad( entidad )));
 	}
 
-	public static <E extends EntidadIndexada> Dto<E> forEntity( Class<? extends E> tipoEntidad ) {
+	public static <E extends EntidadIndexada> Dto<E> forEntity( Class<E> tipoEntidad ) {
 		return new Dto<E>( FactoriaDao.forEntity( tipoEntidad ));
 	}
 
 	public static <E extends EntidadIndexada> Dto<E> getInstance( String repositorio, String entidad ) {
-		return new Dto<E>( FactoriaDao.getInstance( repositorio, entidades.get(entidad)));
+		return new Dto<E>( FactoriaDao.getInstance( repositorio, getEntidad(entidad)));
 	}
 
-	public static <E extends EntidadIndexada> Dto<E> forRepo( Class<? extends Dao<E>> tipoRepositorio )
+	public static <E extends EntidadIndexada, DAOE extends Dao<E>> Dto<E> forRepo( Class<DAOE> tipoRepositorio )
 	{
 		return getInstance( tipoRepositorio, (Class<E>)((ParameterizedType) tipoRepositorio.getGenericSuperclass()).getActualTypeArguments()[0]);
 	}
 
-	public static <E extends EntidadIndexada> Dto<E> getInstance( Class<? extends Dao> tipoRepositorio, String entidad ) {
-		return getInstance(tipoRepositorio, entidades.get(entidad));
+	public static <E extends EntidadIndexada, DAOE extends Dao<E>> Dto<E> getInstance( Class<DAOE> tipoRepositorio, String entidad ) {
+		return getInstance(tipoRepositorio, getEntidad(entidad));
 	}
 
-	public static <E extends EntidadIndexada> Dto<E> getInstance( Class<? extends Dao> tipoRepositorio, Class<? extends EntidadIndexada> tipoEntidad ) {
+	public static <E extends EntidadIndexada, DAOE extends Dao<E>> Dto<E> getInstance( Class<DAOE> tipoRepositorio, Class<E> tipoEntidad ) {
 		return new Dto<E>( FactoriaDao.getInstance( tipoRepositorio, tipoEntidad ));
 	}
 }

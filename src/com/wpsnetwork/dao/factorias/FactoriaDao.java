@@ -35,11 +35,11 @@ public class FactoriaDao {
 		}
 	}
 
-	public static <E extends EntidadIndexada> Dao<E> forEntity( Class<? extends EntidadIndexada> tipoEntidad ) {
+	public static <E extends EntidadIndexada> Dao<E> forEntity( Class<E> tipoEntidad ) {
 		return getInstance( defaultDao, tipoEntidad );
 	}
 
-	public static <E extends EntidadIndexada> Dao<E> getInstance( String repositorio, Class<? extends EntidadIndexada> tipoEntidad ) {
+	public static <E extends EntidadIndexada> Dao<E> getInstance( String repositorio, Class<E> tipoEntidad ) {
 		return getInstance( repos.get(repositorio), tipoEntidad );
 	}
 
