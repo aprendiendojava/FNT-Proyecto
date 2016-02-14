@@ -10,6 +10,7 @@ import com.wpsnetwork.dao.entidades.EntidadIndexada;
 import com.wpsnetwork.dao.fichero.RepositorioFicheroDao;
 import com.wpsnetwork.dao.hibernate.RepositorioHibernateDao;
 import com.wpsnetwork.dao.interfaces.Dao;
+import com.wpsnetwork.dao.interfaces.RepositorioGenerico;
 import com.wpsnetwork.dao.memoria.RepositorioMemoriaDao;
 
 public class FactoriaDao {
@@ -24,35 +25,48 @@ public class FactoriaDao {
 		defaultDao = getDefaultDao();
 	}
 
-	private static Class<? extends Dao> getDefaultDao() {
+	private static <E extends EntidadIndexada, DAOE extends Dao<E>> Class<DAOE> getDefaultDao() {
+		if(defaultDao != null) return (Class<DAOE>) defaultDao;
+
 		Properties configuracion = new Properties();
 		try {
 			configuracion.load(new FileReader( "src/com/wpsnetwork/aplicacion.properties" ));
-			return repos.get( configuracion.getProperty("dao.acceso"));
+			return (Class<DAOE>) repos.get( configuracion.getProperty("dao.acceso"));
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException();
 		}
 	}
 
-	public static <E extends EntidadIndexada> Dao<E> forEntity( Class<E> tipoEntidad ) {
-		return getInstance( defaultDao, tipoEntidad );
+	private static <E extends EntidadIndexada, DAOE extends Dao<E>> DAOE getRepositorio( RepoEntidad re ) {
+		return (DAOE) repositorios.get(re);
+	}
+	private static <E extends EntidadIndexada, DAOE extends Dao<E>> Class<DAOE> getRepoDao( String repositorio ) {
+		return (Class<DAOE>) repos.get( repositorio );
 	}
 
-	public static <E extends EntidadIndexada> Dao<E> getInstance( String repositorio, Class<E> tipoEntidad ) {
-		return getInstance( repos.get(repositorio), tipoEntidad );
+	public static <E extends EntidadIndexada, DAOE extends Dao<E>> DAOE forEntity( Class<E> tipoEntidad ) {
+		return getInstance( getDefaultDao(), tipoEntidad );
 	}
 
-	public static <E extends EntidadIndexada> Dao<E> getInstance( Class<? extends Dao> tipoRepositorio, Class<? extends EntidadIndexada> tipoEntidad )
+	public static <E extends EntidadIndexada, DAOE extends Dao<E>> DAOE getInstance( String repositorio, Class<E> tipoEntidad ) {
+		return getInstance( getRepoDao(repositorio), tipoEntidad );
+	}
+
+	public static <E extends EntidadIndexada, DAOE extends Dao<E>> DAOE getInstance( Class<DAOE> tipoRepositorio, Class<E> tipoEntidad )
 	{
 		RepoEntidad re = new RepoEntidad( tipoRepositorio, tipoEntidad );
 		if ( repositorios.containsKey( re ))
-			return repositorios.get( re );
+			return getRepositorio( re );
 		else {
-			Dao<E> tmpRepositorio;
+			DAOE tmpRepositorio;
 			try {
-				tmpRepositorio = tipoRepositorio.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
+				if ( RepositorioGenerico.class.isAssignableFrom( tipoRepositorio )) {
+					tmpRepositorio = (DAOE) tipoRepositorio.getConstructors()[0].newInstance(tipoEntidad);
+				} else {
+					tmpRepositorio = tipoRepositorio.newInstance();
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 				throw new RuntimeException();
 			}

@@ -11,13 +11,52 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import com.wpsnetwork.dao.entidades.Autor;
 import com.wpsnetwork.dao.entidades.EntidadIndexada;
-import com.wpsnetwork.dao.interfaces.Dao;
+import com.wpsnetwork.dao.interfaces.RepositorioGenerico;
 
-public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> implements Dao<ENTIDAD> {
+public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends  RepositorioGenerico<ENTIDAD> {
+	public RepositorioHibernateDao(Class<ENTIDAD> claseEntidad) {
+		super(claseEntidad);
+	}
+
 	private static SessionFactory sf = new Configuration().setInterceptor(new ReflectiveInstantiator()).configure().buildSessionFactory();
 	private static Session s = sf.openSession();
+
+	@Override
+	public ENTIDAD get(int id) {
+		s.beginTransaction();
+		return (ENTIDAD) s.get(getClaseRepositorio(), id);
+	}
+
+	@Override
+	public void insert(ENTIDAD object) {
+		s.beginTransaction();
+		s.save(object);
+		s.getTransaction().commit();
+		repositoryChanged(object);
+	}
+
+	@Override
+	public void update(ENTIDAD object) {
+		s.beginTransaction();
+		s.update(object);
+		s.getTransaction().commit();
+		repositoryChanged(object);
+	}
+
+	@Override
+	public void delete(ENTIDAD object) {
+		s.beginTransaction();
+		s.delete(object);
+		s.getTransaction().commit();
+		repositoryChanged(object);
+	}
+
+	@Override
+	public List<ENTIDAD> getAll() {
+		s.beginTransaction();
+		return s.createQuery("FROM " + getClaseRepositorio().getSimpleName()).list();
+	}
 
 	private static class ReflectiveInstantiator extends EmptyInterceptor {
 		@Override
@@ -44,38 +83,4 @@ public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> implements
 			return o;
 		}
 	}
-
-	@Override
-	public ENTIDAD get(int id) {
-		s.beginTransaction();
-		return (ENTIDAD) s.get(Autor.class, id);
-	}
-
-	@Override
-	public void insert(ENTIDAD object) {
-		s.beginTransaction();
-		s.save(object);
-		s.getTransaction().commit();
-	}
-
-	@Override
-	public void update(ENTIDAD object) {
-		s.beginTransaction();
-		s.update(object);
-		s.getTransaction().commit();
-	}
-
-	@Override
-	public void delete(ENTIDAD object) {
-		s.beginTransaction();
-		s.delete(object);
-		s.getTransaction().commit();
-	}
-
-	@Override
-	public List<ENTIDAD> getAll() {
-		s.beginTransaction();
-		return s.createQuery("FROM Autor").list();
-	}
-
 }

@@ -5,21 +5,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Observable;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.wpsnetwork.dao.entidades.EntidadIndexada;
-import com.wpsnetwork.dao.interfaces.Dao;
+import com.wpsnetwork.dao.interfaces.RepositorioGenerico;
 
-public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends Observable implements Dao<ENTIDAD> {
-	private Path almacen;
-	private Properties db = new Properties();
+public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends RepositorioGenerico<ENTIDAD> {
+	private final Path almacen;
+	private final Properties db = new Properties();
 
-	private void crear(Class<?> c) {
+	public RepositorioFicheroDao(Class<ENTIDAD> claseEntidad) {
+		super(claseEntidad);
+		this.almacen = Paths.get("dao", "fichero", claseEntidad.getCanonicalName());
 		try {
-			almacen = Paths.get("dao", "fichero",c.getCanonicalName());
 			Files.createDirectories(almacen.getParent());
 			try {
 				Files.createFile(almacen);
@@ -35,8 +35,8 @@ public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends Obse
 	@Override
 	public ENTIDAD get(int id) {
 		try {
-			return new Gson().fromJson((String) db.get(""+id), Class.forName( almacen.getFileName().toString()));
-		} catch (Exception e) {
+			return new Gson().fromJson((String) db.get(""+id), getClaseRepositorio());
+		} catch ( Exception e ) {
 			e.printStackTrace();
 			return null;
 		}
@@ -44,13 +44,10 @@ public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends Obse
 
 	@Override
 	public void insert(ENTIDAD object) {
-		crear( object.getClass());
 		try {
 			db.setProperty(""+object.getId(), new Gson().toJson(object));
 			db.store( Files.newBufferedWriter(almacen ), "" );
-
-			setChanged();
-			notifyObservers(object);
+			repositoryChanged(object);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -66,9 +63,7 @@ public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends Obse
 		db.remove(object.getId());
 		try {
 			db.store(Files.newBufferedWriter(almacen),"");
-
-			setChanged();
-			notifyObservers(object);
+			repositoryChanged(object);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -81,7 +76,7 @@ public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends Obse
 				.map(o-> {
 			try {
 				return (ENTIDAD) new Gson()
-						.fromJson((String) o, Class.forName( almacen.getFileName().toString()));
+						.fromJson((String) o, getClaseRepositorio());
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new RuntimeException();
