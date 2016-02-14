@@ -11,8 +11,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import com.wpsnetwork.dao.RepositorioGenerico;
 import com.wpsnetwork.dao.entidades.EntidadIndexada;
-import com.wpsnetwork.dao.interfaces.RepositorioGenerico;
 
 public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends  RepositorioGenerico<ENTIDAD> {
 	public RepositorioHibernateDao(Class<ENTIDAD> claseEntidad) {

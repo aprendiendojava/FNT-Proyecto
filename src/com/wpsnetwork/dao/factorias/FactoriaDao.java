@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import com.wpsnetwork.dao.RepositorioGenerico;
 import com.wpsnetwork.dao.entidades.EntidadIndexada;
 import com.wpsnetwork.dao.fichero.RepositorioFicheroDao;
 import com.wpsnetwork.dao.hibernate.RepositorioHibernateDao;
 import com.wpsnetwork.dao.interfaces.Dao;
-import com.wpsnetwork.dao.interfaces.RepositorioGenerico;
 import com.wpsnetwork.dao.memoria.RepositorioMemoriaDao;
 
 public class FactoriaDao {
