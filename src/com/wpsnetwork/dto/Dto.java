@@ -1,4 +1,4 @@
-package com.wpsnetwork.dto.impl;
+package com.wpsnetwork.dto;
 
 import java.io.Serializable;
 import java.util.List;

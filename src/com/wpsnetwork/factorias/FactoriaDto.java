@@ -11,7 +11,7 @@ import com.wpsnetwork.dao.entidades.Libro;
 import com.wpsnetwork.dao.entidades.Persona;
 import com.wpsnetwork.dao.entidades.Prestamo;
 import com.wpsnetwork.dao.interfaces.DaoIndexado;
-import com.wpsnetwork.dto.impl.Dto;
+import com.wpsnetwork.dto.Dto;
 
 public final class FactoriaDto {
 	private static Map<String,Class<? extends EntidadIndexada>> entidades = new HashMap<>();

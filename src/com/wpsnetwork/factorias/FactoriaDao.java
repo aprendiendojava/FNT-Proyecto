@@ -7,11 +7,11 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.wpsnetwork.dao.entidades.EntidadIndexada;
-import com.wpsnetwork.dao.impl.RepositorioFicheroDao;
-import com.wpsnetwork.dao.impl.RepositorioHibernateDao;
-import com.wpsnetwork.dao.impl.RepositorioMemoriaDao;
 import com.wpsnetwork.dao.interfaces.Dao;
 import com.wpsnetwork.dao.interfaces.DaoIndexado;
+import com.wpsnetwork.dao.repositorios.RepositorioFicheroDao;
+import com.wpsnetwork.dao.repositorios.RepositorioHibernateDao;
+import com.wpsnetwork.dao.repositorios.RepositorioMemoriaDao;
 
 public class FactoriaDao {
 	private static Class<? extends Dao> defaultDao;

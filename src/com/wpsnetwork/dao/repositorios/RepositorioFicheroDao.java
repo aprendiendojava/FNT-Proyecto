@@ -1,4 +1,4 @@
-package com.wpsnetwork.dao.impl;
+package com.wpsnetwork.dao.repositorios;
 
 import java.io.IOException;
 import java.io.Serializable;

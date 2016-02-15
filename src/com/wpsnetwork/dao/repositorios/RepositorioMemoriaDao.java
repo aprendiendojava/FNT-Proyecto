@@ -1,4 +1,4 @@
-package com.wpsnetwork.dao.impl;
+package com.wpsnetwork.dao.repositorios;
 
 import java.io.Serializable;
 import java.util.ArrayList;

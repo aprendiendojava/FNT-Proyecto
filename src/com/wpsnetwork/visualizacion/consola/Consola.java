@@ -7,10 +7,10 @@ import org.apache.logging.log4j.Logger;
 import com.wpsnetwork.dao.entidades.Autor;
 import com.wpsnetwork.dao.entidades.CategoriaLibro;
 import com.wpsnetwork.dao.entidades.Libro;
-import com.wpsnetwork.dao.impl.RepositorioAutoresMemoriaDao;
-import com.wpsnetwork.dao.impl.RepositorioHibernateDao;
-import com.wpsnetwork.dto.impl.Dto;
-import com.wpsnetwork.dto.impl.EntidadDto;
+import com.wpsnetwork.dao.repositorios.RepositorioAutoresMemoriaDao;
+import com.wpsnetwork.dao.repositorios.RepositorioHibernateDao;
+import com.wpsnetwork.dto.Dto;
+import com.wpsnetwork.dto.EntidadDto;
 import com.wpsnetwork.factorias.FactoriaDto;
 
 public final class Consola {
