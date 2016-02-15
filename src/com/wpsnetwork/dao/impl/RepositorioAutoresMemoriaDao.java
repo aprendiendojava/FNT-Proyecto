@@ -1,4 +1,4 @@
-package com.wpsnetwork.dao.memoria;
+package com.wpsnetwork.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;

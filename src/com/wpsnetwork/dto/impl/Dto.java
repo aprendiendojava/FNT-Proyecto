@@ -1,5 +1,6 @@
-package com.wpsnetwork.dto;
+package com.wpsnetwork.dto.impl;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -9,23 +10,23 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.wpsnetwork.dao.entidades.EntidadIndexada;
-import com.wpsnetwork.dao.interfaces.Dao;
+import com.wpsnetwork.dao.interfaces.DaoIndexado;
 import com.wpsnetwork.dto.entidades.EntidadDto;
 
-public class Dto<ENTIDAD extends EntidadIndexada> implements Dao<EntidadDto<ENTIDAD>>, Observer {
+public class Dto<ENTIDAD extends EntidadIndexada> implements DaoIndexado<EntidadDto<ENTIDAD>>, Observer {
 	private static final Logger logDto = LogManager.getLogger( Dto.class );
-	private final Dao<ENTIDAD> repositorio;
+	private final DaoIndexado<ENTIDAD> repositorio;
 
-	public <REPO extends Dao<ENTIDAD>> Dto( REPO repositorio ) {
-		this.repositorio = (Dao<ENTIDAD>) repositorio;
+	public <REPO extends DaoIndexado<ENTIDAD>> Dto( REPO repositorio ) {
+		this.repositorio = repositorio;
 
 		if ( repositorio instanceof Observable )
 			((Observable)this.repositorio).addObserver( this );
 	}
 
 	@Override
-	public EntidadDto<ENTIDAD> get( int id ) {
-		EntidadDto<ENTIDAD> entDto = new EntidadDto<ENTIDAD>( repositorio.get(id));
+	public EntidadDto<ENTIDAD> get( Serializable index ) {
+		EntidadDto<ENTIDAD> entDto = new EntidadDto<ENTIDAD>( repositorio.get(index));
 		return entDto;
 	}
 

@@ -19,15 +19,16 @@ public class EntidadDto <ENTIDAD extends EntidadIndexada> implements Indexado {
 	}
 
 	public void updateEntidad( ENTIDAD entidad ) {
+		// TODO Util.setId( this.entidad.getIndex(), entidad );
 		this.entidad = entidad;
-	}
-
-	@Override
-	public int getId() {
-		return entidad.getId();
 	}
 
 	public String toString() {
 		return " | DTO : " + entidad.toString();
+	}
+
+	@Override
+	public Object getIndex() {
+		return entidad.getIndex();
 	}
 }

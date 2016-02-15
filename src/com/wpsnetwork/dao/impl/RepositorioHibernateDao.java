@@ -1,7 +1,8 @@
-package com.wpsnetwork.dao.hibernate;
+package com.wpsnetwork.dao.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,51 +12,75 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import com.wpsnetwork.dao.RepositorioGenerico;
 import com.wpsnetwork.dao.entidades.EntidadIndexada;
 
-public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends  RepositorioGenerico<ENTIDAD> {
+public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends RepositorioIndexado<ENTIDAD> {
 	public RepositorioHibernateDao(Class<ENTIDAD> claseEntidad) {
 		super(claseEntidad);
 	}
 
-	private static SessionFactory sf = new Configuration().setInterceptor(new ReflectiveInstantiator()).configure().buildSessionFactory();
-	private static Session s = sf.openSession();
+	private static SessionFactory sf;
+	private static Session s;
+	static {
+		try {
+			sf = new Configuration().setInterceptor(new ReflectiveInstantiator()).configure().buildSessionFactory();
+			s = sf.openSession();
+		} catch( Exception e ) {
+			System.out.println("NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+		}
+	}
 
 	@Override
-	public ENTIDAD get(int id) {
+	public ENTIDAD get( Serializable id ) {
 		s.beginTransaction();
 		return (ENTIDAD) s.get(getClaseRepositorio(), id);
 	}
 
 	@Override
 	public void insert(ENTIDAD object) {
+		try {
 		s.beginTransaction();
 		s.save(object);
 		s.getTransaction().commit();
 		repositoryChanged(object);
+		} catch ( Exception e ) {
+			System.out.println("NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+		}
 	}
 
 	@Override
 	public void update(ENTIDAD object) {
+		try {
 		s.beginTransaction();
 		s.update(object);
 		s.getTransaction().commit();
 		repositoryChanged(object);
+		} catch ( Exception e ) {
+			System.out.println("NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+		}
 	}
 
 	@Override
 	public void delete(ENTIDAD object) {
+		try {
 		s.beginTransaction();
 		s.delete(object);
 		s.getTransaction().commit();
 		repositoryChanged(object);
+		} catch (Exception e) {
+			System.out.println("NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+		}
 	}
 
 	@Override
 	public List<ENTIDAD> getAll() {
+		try {
 		s.beginTransaction();
 		return s.createQuery("FROM " + getClaseRepositorio().getSimpleName()).list();
+		} catch (Exception e){
+			System.out.println("NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+			return new ArrayList<>();
+		}
 	}
 
 	private static class ReflectiveInstantiator extends EmptyInterceptor {

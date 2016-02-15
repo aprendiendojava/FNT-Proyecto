@@ -1,6 +1,7 @@
-package com.wpsnetwork.dao.fichero;
+package com.wpsnetwork.dao.impl;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,10 +10,9 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
-import com.wpsnetwork.dao.RepositorioGenerico;
 import com.wpsnetwork.dao.entidades.EntidadIndexada;
 
-public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends RepositorioGenerico<ENTIDAD> {
+public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends RepositorioIndexado<ENTIDAD> {
 	private final Path almacen;
 	private final Properties db = new Properties();
 
@@ -33,7 +33,7 @@ public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends Repo
 	}
 
 	@Override
-	public ENTIDAD get(int id) {
+	public ENTIDAD get( Serializable id) {
 		try {
 			return new Gson().fromJson((String) db.get(""+id), getClaseRepositorio());
 		} catch ( Exception e ) {
@@ -43,12 +43,15 @@ public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends Repo
 	}
 
 	@Override
-	public void insert(ENTIDAD object) {
+	public void insert( ENTIDAD object ) {
+		if ( object.getIndex() == null )
+			assignId( object );
+
 		try {
-			db.setProperty(""+object.getId(), new Gson().toJson(object));
-			db.store( Files.newBufferedWriter(almacen ), "" );
-			repositoryChanged(object);
-		} catch (IOException e) {
+			db.setProperty( object.getIndex().toString(), new Gson().toJson( object ));
+			db.store( Files.newBufferedWriter( almacen ), "" );
+			repositoryChanged( object );
+		} catch ( IOException e ) {
 			e.printStackTrace();
 		}
 	}
@@ -60,7 +63,7 @@ public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends Repo
 
 	@Override
 	public void delete(ENTIDAD object) {
-		db.remove(object.getId());
+		db.remove(object.getIndex());
 		try {
 			db.store(Files.newBufferedWriter(almacen),"");
 			repositoryChanged(object);

@@ -1,54 +1,66 @@
 package com.wpsnetwork.visualizacion.consola;
+import java.util.Arrays;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.wpsnetwork.dao.memoria.RepositorioAutoresMemoriaDao;
-import com.wpsnetwork.dto.Dto;
-import com.wpsnetwork.dto.entidades.Autor;
-import com.wpsnetwork.dto.factorias.FactoriaDto;
+import com.wpsnetwork.dao.entidades.Autor;
+import com.wpsnetwork.dao.entidades.CategoriaLibro;
+import com.wpsnetwork.dao.entidades.Libro;
+import com.wpsnetwork.dao.impl.RepositorioAutoresMemoriaDao;
+import com.wpsnetwork.dao.impl.RepositorioHibernateDao;
+import com.wpsnetwork.dto.impl.Dto;
+import com.wpsnetwork.factorias.FactoriaDto;
 
 public final class Consola {
 	private static final Logger logConsola = LogManager.getLogger( Consola.class );
 
 	public static void main( String...strings ) {
-		Dto<com.wpsnetwork.dao.entidades.Autor> autores =
-				FactoriaDto.forRepo( RepositorioAutoresMemoriaDao.class );
+		Dto<com.wpsnetwork.dao.entidades.Autor> autores = FactoriaDto.forRepo( RepositorioAutoresMemoriaDao.class );
 		logConsola.trace( imprimir( autores ));
 
-		Dto<com.wpsnetwork.dao.entidades.Autor> autores2 =
-				FactoriaDto.forEntity( "AUTOR" );
-	
-		Autor autor = new Autor( new com.wpsnetwork.dao.entidades.Autor( "Julio Cortazar" ));
-		autores2.insert( autor );
+
+
+
+		Dto<com.wpsnetwork.dao.entidades.Autor> autores2 = FactoriaDto.forEntity( "AUTOR" );
+		autores.getAll().forEach( a -> autores2.insert( a ));
+		logConsola.trace( imprimir( autores2 ));
 		logConsola.trace( imprimir( autores ));
 
-		autores.getAll().forEach(a->autores2.insert(a));
-		autores.getAll().forEach(a->System.out.println("........"+a.getId()+"..........." + autores2.get(a.getId())));
-		logConsola.trace( imprimir( autores ));
-		logConsola.trace( "AUTORES 2" + imprimir( autores2 ));
-//		logConsola.trace( "AUTORES 3" + imprimir( autores3 ));
+		com.wpsnetwork.dto.entidades.Autor cortazar = new com.wpsnetwork.dto.entidades.Autor( new Autor( "Julio Cortazar" ));
+		autores2.insert( cortazar );
+		logConsola.trace( imprimir( autores2 ));
 
-		autor.updateEntidad( new com.wpsnetwork.dao.entidades.Autor( "Julio Cortázar" ));
-		autores.update( autor );
-		logConsola.trace( imprimir( autores ));
-		logConsola.trace( "AUTORES 2" + imprimir( autores2 ));
+		cortazar.updateEntidad( new Autor( "Julio Cortázar"));
+		autores2.update( cortazar );
+		logConsola.trace( imprimir( autores2 ));
 
-		autores.delete( autor );
-		logConsola.trace( imprimir( autores ));
 
-//		Dto<com.wpsnetwork.dao.entidades.Libro> libros =
-//				FactoriaDto.forEntity( "LIBRO" );
-//		Libro libro = new Libro( new com.wpsnetwork.dao.entidades.Libro( "Rayuela", 400, "Editorial1", 14 ));
-//		libros.insert( libro );
-//		logConsola.trace( imprimir( libros ));
-//
-//		libro = new Libro( new com.wpsnetwork.dao.entidades.Libro( "La amabilidad de los extraños", 90, "Editorial2", 1 ));
-//		libros.insert( libro );
-//		logConsola.trace( imprimir( libros ));
-//
-//		Dto<com.wpsnetwork.dao.entidades.CategoriaLibro> categorias =
-//				FactoriaDto.forEntity( "CATEGORIA" );
-//		logConsola.trace( imprimir( categorias ));		
+
+
+		Dto<CategoriaLibro> categorias = FactoriaDto.getInstance( RepositorioHibernateDao.class, CategoriaLibro.class );
+		Arrays.asList(
+			new CategoriaLibro( "Novela" ),
+			new CategoriaLibro( "Poesía" ),
+			new CategoriaLibro( "Drama" ),
+			new CategoriaLibro( "Ensayo" )
+		).forEach( cl -> categorias.insert( new com.wpsnetwork.dto.entidades.CategoriaLibro( cl )));
+		logConsola.trace( imprimir( categorias ));
+
+
+
+
+		Dto<Libro> libros = FactoriaDto.forEntity( Libro.class );
+		Arrays.asList(
+			new Libro( "Moby Dick", 300, "Astral", 34 ),
+			new Libro( "Las flores del mal", 140, "Editorial3", 11 ),
+			new Libro( "Rayuela", 400, "Editorial1", 14 ),
+			new Libro( "La amabilidad de los extraños", 90, "Editorial2", 1 )
+		).forEach( l -> libros.insert( new com.wpsnetwork.dto.entidades.Libro( l )));
+		logConsola.trace( imprimir( libros ));
+
+		libros.delete( libros.get(1));
+		logConsola.trace( imprimir( libros ));
 	}
 
 	private static String imprimir( Dto<?> objetos ) {

@@ -1,4 +1,4 @@
-package com.wpsnetwork.dao.factorias;
+package com.wpsnetwork.factorias;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import com.wpsnetwork.dao.RepositorioGenerico;
 import com.wpsnetwork.dao.entidades.EntidadIndexada;
-import com.wpsnetwork.dao.fichero.RepositorioFicheroDao;
-import com.wpsnetwork.dao.hibernate.RepositorioHibernateDao;
+import com.wpsnetwork.dao.impl.RepositorioFicheroDao;
+import com.wpsnetwork.dao.impl.RepositorioHibernateDao;
+import com.wpsnetwork.dao.impl.RepositorioMemoriaDao;
 import com.wpsnetwork.dao.interfaces.Dao;
-import com.wpsnetwork.dao.memoria.RepositorioMemoriaDao;
+import com.wpsnetwork.dao.interfaces.DaoIndexado;
 
 public class FactoriaDao {
 	private static Class<? extends Dao> defaultDao;
@@ -30,7 +30,7 @@ public class FactoriaDao {
 
 		Properties configuracion = new Properties();
 		try {
-			configuracion.load(new FileReader( "src/com/wpsnetwork/aplicacion.properties" ));
+			configuracion.load(new FileReader( "src/aplicacion.properties" ));
 			return (Class<DAOE>) repos.get( configuracion.getProperty("dao.acceso"));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -61,14 +61,14 @@ public class FactoriaDao {
 		else {
 			DAOE tmpRepositorio;
 			try {
-				if ( RepositorioGenerico.class.isAssignableFrom( tipoRepositorio )) {
-					tmpRepositorio = (DAOE) tipoRepositorio.getConstructors()[0].newInstance(tipoEntidad);
-				} else {
-					tmpRepositorio = tipoRepositorio.newInstance();
-				}
+				tmpRepositorio = tipoRepositorio.newInstance();
 			} catch (Exception e) {
-				e.printStackTrace();
-				throw new RuntimeException();
+				try {
+					tmpRepositorio = (DAOE) tipoRepositorio.getConstructors()[0].newInstance(tipoEntidad);
+				} catch ( Exception e2 ) {
+					e2.printStackTrace();
+					throw new RuntimeException();
+				}
 			}
 
 			repositorios.put( re, tmpRepositorio );
