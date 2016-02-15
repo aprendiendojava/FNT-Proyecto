@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.wpsnetwork.dao.entidades.EntidadIndexada;
 import com.wpsnetwork.dao.interfaces.DaoIndexado;
-import com.wpsnetwork.dto.entidades.EntidadDto;
 
 public class Dto<ENTIDAD extends EntidadIndexada> implements DaoIndexado<EntidadDto<ENTIDAD>>, Observer {
 	private static final Logger logDto = LogManager.getLogger( Dto.class );

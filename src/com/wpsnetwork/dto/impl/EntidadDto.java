@@ -1,4 +1,4 @@
-package com.wpsnetwork.dto.entidades;
+package com.wpsnetwork.dto.impl;
 
 import com.wpsnetwork.dao.entidades.EntidadIndexada;
 import com.wpsnetwork.dao.interfaces.Indexado;

@@ -10,6 +10,7 @@ import com.wpsnetwork.dao.entidades.Libro;
 import com.wpsnetwork.dao.impl.RepositorioAutoresMemoriaDao;
 import com.wpsnetwork.dao.impl.RepositorioHibernateDao;
 import com.wpsnetwork.dto.impl.Dto;
+import com.wpsnetwork.dto.impl.EntidadDto;
 import com.wpsnetwork.factorias.FactoriaDto;
 
 public final class Consola {
@@ -27,7 +28,7 @@ public final class Consola {
 		logConsola.trace( imprimir( autores2 ));
 		logConsola.trace( imprimir( autores ));
 
-		com.wpsnetwork.dto.entidades.Autor cortazar = new com.wpsnetwork.dto.entidades.Autor( new Autor( "Julio Cortazar" ));
+		EntidadDto<Autor> cortazar = new EntidadDto<>( new Autor( "Julio Cortazar" ));
 		autores2.insert( cortazar );
 		logConsola.trace( imprimir( autores2 ));
 
@@ -44,7 +45,7 @@ public final class Consola {
 			new CategoriaLibro( "Poesía" ),
 			new CategoriaLibro( "Drama" ),
 			new CategoriaLibro( "Ensayo" )
-		).forEach( cl -> categorias.insert( new com.wpsnetwork.dto.entidades.CategoriaLibro( cl )));
+		).forEach( cl -> categorias.insert( new EntidadDto<CategoriaLibro>( cl )));
 		logConsola.trace( imprimir( categorias ));
 
 
@@ -56,7 +57,7 @@ public final class Consola {
 			new Libro( "Las flores del mal", 140, "Editorial3", 11 ),
 			new Libro( "Rayuela", 400, "Editorial1", 14 ),
 			new Libro( "La amabilidad de los extraños", 90, "Editorial2", 1 )
-		).forEach( l -> libros.insert( new com.wpsnetwork.dto.entidades.Libro( l )));
+		).forEach( l -> libros.insert( new EntidadDto<Libro>( l )));
 		logConsola.trace( imprimir( libros ));
 
 		libros.delete( libros.get(1));
