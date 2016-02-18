@@ -4,11 +4,11 @@ import java.util.Arrays;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.wpsnetwork.dao.entidades.Autor;
-import com.wpsnetwork.dao.entidades.CategoriaLibro;
-import com.wpsnetwork.dao.entidades.Libro;
 import com.wpsnetwork.dao.repositorios.RepositorioAutoresMemoriaDao;
 import com.wpsnetwork.dao.repositorios.RepositorioHibernateDao;
+import com.wpsnetwork.datos.entidades.Autor;
+import com.wpsnetwork.datos.entidades.CategoriaLibro;
+import com.wpsnetwork.datos.entidades.Libro;
 import com.wpsnetwork.dto.Dto;
 import com.wpsnetwork.dto.EntidadDto;
 import com.wpsnetwork.factorias.FactoriaDto;
@@ -17,13 +17,13 @@ public final class Consola {
 	private static final Logger logConsola = LogManager.getLogger( Consola.class );
 
 	public static void main( String...strings ) {
-		Dto<com.wpsnetwork.dao.entidades.Autor> autores = FactoriaDto.forRepo( RepositorioAutoresMemoriaDao.class );
+		Dto<Autor> autores = FactoriaDto.forRepo( RepositorioAutoresMemoriaDao.class );
 		logConsola.trace( imprimir( autores ));
 
 
 
 
-		Dto<com.wpsnetwork.dao.entidades.Autor> autores2 = FactoriaDto.forEntity( "AUTOR" );
+		Dto<Autor> autores2 = FactoriaDto.forEntity( "AUTOR" );
 		autores.getAll().forEach( a -> autores2.insert( a ));
 		logConsola.trace( imprimir( autores2 ));
 		logConsola.trace( imprimir( autores ));

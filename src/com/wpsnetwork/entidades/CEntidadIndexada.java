@@ -1,12 +1,13 @@
-package com.wpsnetwork.dao.entidades;
+package com.wpsnetwork.entidades;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import com.google.gson.Gson;
 import com.wpsnetwork.dao.interfaces.Indexado;
+import com.wpsnetwork.datos.entidades.EntidadIndexada;
 
-public abstract class EntidadIndexada implements Indexado {
+public abstract class CEntidadIndexada implements Indexado, EntidadIndexada {
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -16,7 +17,7 @@ public abstract class EntidadIndexada implements Indexado {
 		return new Gson().toJson(this);
 	}
 
-	protected void setId( Integer id ) {
+	public void setId( Integer id ) {
 		this.id = id;
 	}
 
@@ -24,13 +25,4 @@ public abstract class EntidadIndexada implements Indexado {
 	public Object getIndex() {
 		return id;
 	}
-
-
-	public static <ENTIDAD extends EntidadIndexada> void setId( Integer id, ENTIDAD entidad ) {
-		if ( entidad.getIndex() == null )
-			entidad.setId(id);
-		else
-			throw new RuntimeException();
-	}
-
 }

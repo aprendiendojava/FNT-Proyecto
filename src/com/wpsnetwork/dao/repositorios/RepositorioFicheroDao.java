@@ -10,7 +10,7 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
-import com.wpsnetwork.dao.entidades.EntidadIndexada;
+import com.wpsnetwork.datos.entidades.EntidadIndexada;
 
 public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends RepositorioIndexado<ENTIDAD> {
 	private final Path almacen;

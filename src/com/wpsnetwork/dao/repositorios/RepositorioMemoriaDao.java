@@ -9,7 +9,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.wpsnetwork.dao.entidades.EntidadIndexada;
+import com.wpsnetwork.datos.entidades.EntidadIndexada;
 
 public class RepositorioMemoriaDao<ENTIDAD extends EntidadIndexada> extends RepositorioIndexado<ENTIDAD> {
 	private static final Logger logDao = LogManager.getLogger( RepositorioMemoriaDao.class );

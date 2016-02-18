@@ -12,7 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import com.wpsnetwork.dao.entidades.EntidadIndexada;
+import com.wpsnetwork.datos.entidades.EntidadIndexada;
 
 public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends RepositorioIndexado<ENTIDAD> {
 	public RepositorioHibernateDao(Class<ENTIDAD> claseEntidad) {
@@ -32,8 +32,13 @@ public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends Re
 
 	@Override
 	public ENTIDAD get( Serializable id ) {
+		try {
 		s.beginTransaction();
 		return (ENTIDAD) s.get(getClaseRepositorio(), id);
+		} catch ( Exception e ) {
+			System.out.println("NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+			return null;
+		}
 	}
 
 	@Override

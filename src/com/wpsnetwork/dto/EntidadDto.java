@@ -1,7 +1,7 @@
 package com.wpsnetwork.dto;
 
-import com.wpsnetwork.dao.entidades.EntidadIndexada;
 import com.wpsnetwork.dao.interfaces.Indexado;
+import com.wpsnetwork.datos.entidades.EntidadIndexada;
 
 public class EntidadDto <ENTIDAD extends EntidadIndexada> implements Indexado {
 	private ENTIDAD entidad;

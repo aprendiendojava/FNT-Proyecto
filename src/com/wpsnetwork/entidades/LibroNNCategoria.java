@@ -1,6 +1,6 @@
-package com.wpsnetwork.dao.entidades;
+package com.wpsnetwork.entidades;
 
-public final class LibroNNCategoria extends EntidadIndexada {
+public final class LibroNNCategoria extends CEntidadIndexada {
 	private int idLibro;
 	private int idCategoriaLibro;
 

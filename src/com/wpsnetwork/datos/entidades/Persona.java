@@ -1,17 +1,8 @@
-package com.wpsnetwork.dao.entidades;
+package com.wpsnetwork.datos.entidades;
 
 import java.time.LocalDate;
 
-public final class Persona extends EntidadIndexada {
-	private String nombre;
-	private String dni;
-	private LocalDate fechaNacimiento;
-	private String direccion;
-	private String telefono;
-	private String provincia;
-	private String pais;
-	private int codigoPostal;
-
+public class Persona extends com.wpsnetwork.entidades.Persona implements EntidadIndexada {
 	public Persona( String nombre, String dni, LocalDate fechaNacimiento, String direccion, String telefono, String provincia, String pais, int codigoPostal ) {
 		this.nombre = nombre;
 		this.dni = dni;
@@ -21,5 +12,15 @@ public final class Persona extends EntidadIndexada {
 		this.provincia = provincia;
 		this.pais = pais;
 		this.codigoPostal = codigoPostal;
+	}
+
+	@Override
+	public Object getIndex() {
+		return id;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }

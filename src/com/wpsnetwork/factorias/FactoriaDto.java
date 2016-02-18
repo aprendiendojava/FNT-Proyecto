@@ -4,14 +4,14 @@ import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.wpsnetwork.dao.entidades.Autor;
-import com.wpsnetwork.dao.entidades.CategoriaLibro;
-import com.wpsnetwork.dao.entidades.EntidadIndexada;
-import com.wpsnetwork.dao.entidades.Libro;
-import com.wpsnetwork.dao.entidades.Persona;
-import com.wpsnetwork.dao.entidades.Prestamo;
 import com.wpsnetwork.dao.interfaces.DaoIndexado;
+import com.wpsnetwork.datos.entidades.Autor;
+import com.wpsnetwork.datos.entidades.EntidadIndexada;
+import com.wpsnetwork.datos.entidades.Libro;
 import com.wpsnetwork.dto.Dto;
+import com.wpsnetwork.datos.entidades.CategoriaLibro;
+import com.wpsnetwork.datos.entidades.Persona;
+import com.wpsnetwork.datos.entidades.Prestamo;
 
 public final class FactoriaDto {
 	private static Map<String,Class<? extends EntidadIndexada>> entidades = new HashMap<>();

@@ -3,7 +3,7 @@ package com.wpsnetwork.dao.repositorios;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wpsnetwork.dao.entidades.Autor;
+import com.wpsnetwork.datos.entidades.Autor;
 
 public final class RepositorioAutoresMemoriaDao extends RepositorioMemoriaDao<Autor> {
 	private static List<Autor> autores = new ArrayList<>();
