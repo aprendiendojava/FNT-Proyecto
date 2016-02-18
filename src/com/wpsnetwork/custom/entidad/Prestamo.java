@@ -1,9 +1,12 @@
-package com.wpsnetwork.entidades;
+package com.wpsnetwork.custom.entidad;
 
 import java.time.LocalDateTime;
 
-import com.wpsnetwork.model.entidad.EntidadIndexada;
+import javax.persistence.MappedSuperclass;
 
+import com.wpsnetwork.base.entidad.EntidadIndexada;
+
+@MappedSuperclass
 public abstract class Prestamo extends EntidadIndexada {
 	protected LocalDateTime fechaInicio;
 	protected LocalDateTime fechaFin;

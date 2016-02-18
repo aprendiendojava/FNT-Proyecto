@@ -1,4 +1,4 @@
-package com.wpsnetwork.dao.interfaces;
+package com.wpsnetwork.base.interfaz;
 
 import java.io.Serializable;
 

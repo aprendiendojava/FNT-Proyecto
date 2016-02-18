@@ -1,4 +1,4 @@
-package com.wpsnetwork.dao.repositorios;
+package com.wpsnetwork.base.repositorio;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -12,7 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import com.wpsnetwork.model.entidad.EntidadIndexada;
+import com.wpsnetwork.base.entidad.EntidadIndexada;
 
 public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends RepositorioIndexado<ENTIDAD> {
 	public RepositorioHibernateDao(Class<ENTIDAD> claseEntidad) {
@@ -59,10 +59,9 @@ public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends Re
 	@Override
 	public void update(ENTIDAD original, ENTIDAD updated) {
 		try {
-		s.beginTransaction();
 		updated.setId((Integer) original.getIndex());
-		s.update(updated);
-		s.getTransaction().commit();
+		delete(original);
+		insert(updated);
 		repositoryChanged(updated);
 		} catch ( Exception e ) {
 			System.out.println("NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");

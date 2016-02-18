@@ -4,25 +4,24 @@ import java.util.Arrays;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.wpsnetwork.dao.repositorios.RepositorioAutoresMemoriaDao;
-import com.wpsnetwork.dao.repositorios.RepositorioHibernateDao;
-import com.wpsnetwork.datos.entidades.AutorDto;
-import com.wpsnetwork.datos.entidades.CategoriaLibroDto;
-import com.wpsnetwork.datos.entidades.LibroDto;
-import com.wpsnetwork.dto.Dto;
-import com.wpsnetwork.model.factoria.FactoriaDto;
+import com.wpsnetwork.base.FactoriaDao;
+import com.wpsnetwork.base.interfaz.DaoIndexado;
+import com.wpsnetwork.custom.dto.AutorDto;
+import com.wpsnetwork.custom.dto.CategoriaLibroDto;
+import com.wpsnetwork.custom.dto.LibroDto;
+import com.wpsnetwork.custom.repositorio.RepositorioAutoresMemoriaDao;
 
 public final class Consola {
 	private static final Logger logConsola = LogManager.getLogger( Consola.class );
 
 	public static void main( String...strings ) {
-		Dto<AutorDto> autores = FactoriaDto.forRepo( RepositorioAutoresMemoriaDao.class );
+		DaoIndexado<AutorDto> autores = FactoriaDao.getInstance( RepositorioAutoresMemoriaDao.class, AutorDto.class );
 		logConsola.trace( imprimir( autores ));
 
 
 
 
-		Dto<AutorDto> autores2 = FactoriaDto.forEntity( "AUTOR" );
+		DaoIndexado<AutorDto> autores2 = FactoriaDao.forEntity( AutorDto.class );
 		autores.getAll().forEach( a -> autores2.insert( a ));
 		logConsola.trace( imprimir( autores2 ));
 		logConsola.trace( imprimir( autores ));
@@ -37,7 +36,7 @@ public final class Consola {
 
 
 
-		Dto<CategoriaLibroDto> categorias = FactoriaDto.getInstance( RepositorioHibernateDao.class, CategoriaLibroDto.class );
+		DaoIndexado<CategoriaLibroDto> categorias = FactoriaDao.forEntity( CategoriaLibroDto.class );
 		Arrays.asList(
 			new CategoriaLibroDto( "Novela" ),
 			new CategoriaLibroDto( "Poesía" ),
@@ -49,7 +48,7 @@ public final class Consola {
 
 
 
-		Dto<LibroDto> libros = FactoriaDto.forEntity( LibroDto.class );
+		DaoIndexado<LibroDto> libros = FactoriaDao.forEntity( LibroDto.class );
 		Arrays.asList(
 			new LibroDto( "Moby Dick", 300, "Astral", 34 ),
 			new LibroDto( "Las flores del mal", 140, "Editorial3", 11 ),
@@ -58,11 +57,11 @@ public final class Consola {
 		).forEach( l -> libros.insert( l ));
 		logConsola.trace( imprimir( libros ));
 
-		libros.delete( libros.get(1));
+		libros.delete( libros.getAll().get(1));
 		logConsola.trace( imprimir( libros ));
 	}
 
-	private static String imprimir( Dto<?> objetos ) {
+	private static String imprimir( DaoIndexado<?> objetos ) {
 		return objetos.getAll().stream()
 				.map(l->l.toString())
 				.reduce((texto,l) -> texto + l.toString()).orElse("Lista vacía");

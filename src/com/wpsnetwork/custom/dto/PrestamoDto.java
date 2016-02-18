@@ -1,8 +1,11 @@
-package com.wpsnetwork.datos.entidades;
+package com.wpsnetwork.custom.dto;
 
 import java.time.LocalDateTime;
 
-public class PrestamoDto extends com.wpsnetwork.entidades.Prestamo {
+import javax.persistence.Entity;
+
+@Entity
+public class PrestamoDto extends com.wpsnetwork.custom.entidad.Prestamo {
 	public PrestamoDto ( LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean devuelto, int libro, int persona ) {
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;

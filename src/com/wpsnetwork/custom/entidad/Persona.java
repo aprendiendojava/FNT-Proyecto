@@ -1,9 +1,12 @@
-package com.wpsnetwork.entidades;
+package com.wpsnetwork.custom.entidad;
 
 import java.time.LocalDate;
 
-import com.wpsnetwork.model.entidad.EntidadIndexada;
+import javax.persistence.MappedSuperclass;
 
+import com.wpsnetwork.base.entidad.EntidadIndexada;
+
+@MappedSuperclass
 public abstract class Persona extends EntidadIndexada {
 	protected String nombre;
 	protected String dni;

@@ -1,4 +1,4 @@
-package com.wpsnetwork.dao.repositorios;
+package com.wpsnetwork.base.repositorio;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -10,7 +10,7 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
-import com.wpsnetwork.model.entidad.EntidadIndexada;
+import com.wpsnetwork.base.entidad.EntidadIndexada;
 
 public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends RepositorioIndexado<ENTIDAD> {
 	private final Path almacen;

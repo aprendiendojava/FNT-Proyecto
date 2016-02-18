@@ -1,4 +1,4 @@
-package com.wpsnetwork.model.factoria;
+package com.wpsnetwork.base;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,16 +6,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import com.wpsnetwork.dao.interfaces.Dao;
-import com.wpsnetwork.dao.repositorios.RepositorioFicheroDao;
-import com.wpsnetwork.dao.repositorios.RepositorioHibernateDao;
-import com.wpsnetwork.dao.repositorios.RepositorioMemoriaDao;
-import com.wpsnetwork.model.entidad.EntidadIndexada;
+import com.wpsnetwork.base.entidad.EntidadIndexada;
+import com.wpsnetwork.base.interfaz.Dao;
+import com.wpsnetwork.base.interfaz.DaoIndexado;
+import com.wpsnetwork.base.repositorio.RepositorioFicheroDao;
+import com.wpsnetwork.base.repositorio.RepositorioHibernateDao;
+import com.wpsnetwork.base.repositorio.RepositorioMemoriaDao;
 
 public class FactoriaDao {
-	private static Class<? extends Dao> defaultDao;
-	private static Map<RepoEntidad,Dao> repositorios = new HashMap<>();
-	private static Map<String,Class<? extends Dao>> repos = new HashMap<>();
+	private static Class<? extends DaoIndexado> defaultDao;
+	private static Map<RepoEntidad,DaoIndexado> repositorios = new HashMap<>();
+	private static Map<String,Class<? extends DaoIndexado>> repos = new HashMap<>();
 
 	static {
 		repos.put( "HIBERNATE", RepositorioHibernateDao.class );
@@ -24,7 +25,7 @@ public class FactoriaDao {
 		defaultDao = getDefaultDao();
 	}
 
-	private static <E extends EntidadIndexada, DAOE extends Dao<E>> Class<DAOE> getDefaultDao() {
+	private static <E extends EntidadIndexada, DAOE extends DaoIndexado<E>> Class<DAOE> getDefaultDao() {
 		if(defaultDao != null) return (Class<DAOE>) defaultDao;
 
 		Properties configuracion = new Properties();
@@ -37,22 +38,22 @@ public class FactoriaDao {
 		}
 	}
 
-	private static <E extends EntidadIndexada, DAOE extends Dao<E>> DAOE getRepositorio( RepoEntidad re ) {
+	private static <E extends EntidadIndexada, DAOE extends DaoIndexado<E>> DAOE getRepositorio( RepoEntidad re ) {
 		return (DAOE) repositorios.get(re);
 	}
-	private static <E extends EntidadIndexada, DAOE extends Dao<E>> Class<DAOE> getRepoDao( String repositorio ) {
+	private static <E extends EntidadIndexada, DAOE extends DaoIndexado<E>> Class<DAOE> getRepoDao( String repositorio ) {
 		return (Class<DAOE>) repos.get( repositorio );
 	}
 
-	public static <E extends EntidadIndexada, DAOE extends Dao<E>> DAOE forEntity( Class<E> tipoEntidad ) {
+	public static <E extends EntidadIndexada, DAOE extends DaoIndexado<E>> DAOE forEntity( Class<E> tipoEntidad ) {
 		return getInstance( getDefaultDao(), tipoEntidad );
 	}
 
-	public static <E extends EntidadIndexada, DAOE extends Dao<E>> DAOE getInstance( String repositorio, Class<E> tipoEntidad ) {
+	public static <E extends EntidadIndexada, DAOE extends DaoIndexado<E>> DAOE getInstance( String repositorio, Class<E> tipoEntidad ) {
 		return getInstance( getRepoDao(repositorio), tipoEntidad );
 	}
 
-	public static <E extends EntidadIndexada, DAOE extends Dao<E>> DAOE getInstance( Class<DAOE> tipoRepositorio, Class<E> tipoEntidad )
+	public static <E extends EntidadIndexada, DAOE extends DaoIndexado<E>> DAOE getInstance( Class<DAOE> tipoRepositorio, Class<E> tipoEntidad )
 	{
 		RepoEntidad re = new RepoEntidad( tipoRepositorio, tipoEntidad );
 		if ( repositorios.containsKey( re ))
@@ -79,7 +80,7 @@ public class FactoriaDao {
 		Class<? extends Dao> tipoRepositorio;
 		Class<? extends EntidadIndexada> tipoEntidad;
 
-		public RepoEntidad( Class<? extends Dao> tipoRepositorio, Class<? extends EntidadIndexada> tipoEntidad ) {
+		public RepoEntidad( Class<? extends DaoIndexado> tipoRepositorio, Class<? extends EntidadIndexada> tipoEntidad ) {
 			this.tipoRepositorio = tipoRepositorio;
 			this.tipoEntidad = tipoEntidad;
 		}

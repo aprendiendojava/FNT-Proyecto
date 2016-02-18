@@ -1,4 +1,4 @@
-package com.wpsnetwork.dao.repositorios;
+package com.wpsnetwork.base.repositorio;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.wpsnetwork.model.entidad.EntidadIndexada;
+import com.wpsnetwork.base.entidad.EntidadIndexada;
 
 public class RepositorioMemoriaDao<ENTIDAD extends EntidadIndexada> extends RepositorioIndexado<ENTIDAD> {
 	private static final Logger logDao = LogManager.getLogger( RepositorioMemoriaDao.class );

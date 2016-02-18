@@ -2,16 +2,16 @@ package com.wpsnetwork.visualizacion.consola;
 
 import java.util.Arrays;
 
-import com.wpsnetwork.dao.repositorios.RepositorioAutoresMemoriaDao;
-import com.wpsnetwork.datos.entidades.AutorDto;
-import com.wpsnetwork.datos.entidades.LibroDto;
-import com.wpsnetwork.dto.Dto;
-import com.wpsnetwork.model.factoria.FactoriaDto;
+import com.wpsnetwork.base.FactoriaDao;
+import com.wpsnetwork.base.interfaz.Dao;
+import com.wpsnetwork.custom.dto.AutorDto;
+import com.wpsnetwork.custom.dto.LibroDto;
+import com.wpsnetwork.custom.repositorio.RepositorioAutoresMemoriaDao;
 
 public class Rewrite {
 	public static void main( String...strings ) {
-		Dto<AutorDto> autores = FactoriaDto.forRepo( RepositorioAutoresMemoriaDao.class );
-		Dto<LibroDto> libros = FactoriaDto.forEntity( LibroDto.class );
+		Dao<AutorDto> autores = FactoriaDao.getInstance( RepositorioAutoresMemoriaDao.class, AutorDto.class );
+		Dao<LibroDto> libros = FactoriaDao.forEntity( LibroDto.class );
 		Arrays.asList(
 			new LibroDto( "Moby Dick", 300, "Astral", 34 ),
 			new LibroDto( "Las flores del mal", 140, "Editorial3", 11 ),

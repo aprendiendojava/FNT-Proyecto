@@ -1,4 +1,4 @@
-package com.wpsnetwork.model.entidad;
+package com.wpsnetwork.base.entidad;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import com.google.gson.Gson;
-import com.wpsnetwork.dao.interfaces.Indexado;
+import com.wpsnetwork.base.interfaz.Indexado;
 
 @MappedSuperclass
 public abstract class EntidadIndexada implements Indexado {

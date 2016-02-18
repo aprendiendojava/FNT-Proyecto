@@ -1,9 +1,10 @@
-package com.wpsnetwork.dao.repositorios;
+package com.wpsnetwork.custom.repositorio;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wpsnetwork.datos.entidades.AutorDto;
+import com.wpsnetwork.base.repositorio.RepositorioMemoriaDao;
+import com.wpsnetwork.custom.dto.AutorDto;
 
 public final class RepositorioAutoresMemoriaDao extends RepositorioMemoriaDao<AutorDto> {
 	private static List<AutorDto> autores = new ArrayList<>();
