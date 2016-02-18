@@ -1,13 +1,16 @@
-package com.wpsnetwork.entidades;
+package com.wpsnetwork.model.entidad;
+
+import java.io.Serializable;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 import com.google.gson.Gson;
 import com.wpsnetwork.dao.interfaces.Indexado;
-import com.wpsnetwork.datos.entidades.EntidadIndexada;
 
-public abstract class CEntidadIndexada implements Indexado, EntidadIndexada {
+@MappedSuperclass
+public abstract class EntidadIndexada implements Indexado {
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -22,7 +25,7 @@ public abstract class CEntidadIndexada implements Indexado, EntidadIndexada {
 	}
 
 	@Override
-	public Object getIndex() {
+	public Serializable getIndex() {
 		return id;
 	}
 }

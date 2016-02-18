@@ -4,15 +4,14 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.wpsnetwork.dao.interfaces.DaoIndexado;
-import com.wpsnetwork.datos.entidades.EntidadIndexada;
+import com.wpsnetwork.model.entidad.EntidadIndexada;
 
-public class Dto<ENTIDAD extends EntidadIndexada> implements DaoIndexado<EntidadDto<ENTIDAD>>, Observer {
+public class Dto<ENTIDAD extends EntidadIndexada> implements DaoIndexado<ENTIDAD>, Observer {
 	private static final Logger logDto = LogManager.getLogger( Dto.class );
 	private final DaoIndexado<ENTIDAD> repositorio;
 
@@ -24,34 +23,30 @@ public class Dto<ENTIDAD extends EntidadIndexada> implements DaoIndexado<Entidad
 	}
 
 	@Override
-	public EntidadDto<ENTIDAD> get( Serializable index ) {
-		EntidadDto<ENTIDAD> entDto = new EntidadDto<ENTIDAD>( repositorio.get(index));
-		return entDto;
+	public ENTIDAD get( Serializable index ) {
+		return repositorio.get(index);
 	}
 
 	@Override
-	public void insert( EntidadDto<ENTIDAD> element ) {
-		repositorio.insert( element.getEntidad());
+	public void insert( ENTIDAD element ) {
+		repositorio.insert( element );
 	}
 
 	@Override
-	public void update( EntidadDto<ENTIDAD> element ) {
-		repositorio.update( element.getEntidad());
+	public void update( ENTIDAD original, ENTIDAD updated ) {
+		repositorio.update( original, updated );
 	}
 
 	@Override
-	public void delete( EntidadDto<ENTIDAD> element ) {
-		repositorio.delete( element.getEntidad());
+	public void delete( ENTIDAD element ) {
+		repositorio.delete( element );
 	}
 
 	@Override
-	public List<EntidadDto<ENTIDAD>> getAll() {
+	public List<ENTIDAD> getAll() {
 		List<ENTIDAD> entidades = repositorio.getAll();
 
-		return entidades.stream().map( entidad -> {
-			EntidadDto<ENTIDAD> entDto = new EntidadDto<ENTIDAD>( entidad );
-			return entDto;
-		}).collect(Collectors.toList());		
+		return entidades;		
 	}
 
 	@Override

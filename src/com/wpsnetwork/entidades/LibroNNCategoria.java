@@ -1,6 +1,6 @@
 package com.wpsnetwork.entidades;
 
-public final class LibroNNCategoria extends CEntidadIndexada {
+public final class LibroNNCategoria {
 	private int idLibro;
 	private int idCategoriaLibro;
 

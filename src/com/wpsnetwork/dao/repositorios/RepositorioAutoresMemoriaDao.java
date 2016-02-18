@@ -3,15 +3,15 @@ package com.wpsnetwork.dao.repositorios;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wpsnetwork.datos.entidades.Autor;
+import com.wpsnetwork.datos.entidades.AutorDto;
 
-public final class RepositorioAutoresMemoriaDao extends RepositorioMemoriaDao<Autor> {
-	private static List<Autor> autores = new ArrayList<>();
+public final class RepositorioAutoresMemoriaDao extends RepositorioMemoriaDao<AutorDto> {
+	private static List<AutorDto> autores = new ArrayList<>();
 	static {
-		autores.add(new Autor( "Herman Melville" ));
-		autores.add(new Autor( "Charles Baudelaire" ));
-		autores.add(new Autor( "Gabriel García Márquez" ));
-		autores.add(new Autor( "Pablo Neruda" ));
+		autores.add(new AutorDto( "Herman Melville" ));
+		autores.add(new AutorDto( "Charles Baudelaire" ));
+		autores.add(new AutorDto( "Gabriel García Márquez" ));
+		autores.add(new AutorDto( "Pablo Neruda" ));
 	}
 
 	public RepositorioAutoresMemoriaDao() {

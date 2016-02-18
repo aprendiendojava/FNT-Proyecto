@@ -2,8 +2,9 @@ package com.wpsnetwork.entidades;
 
 import java.time.LocalDate;
 
-public abstract class Persona {
-	protected Integer id;
+import com.wpsnetwork.model.entidad.EntidadIndexada;
+
+public abstract class Persona extends EntidadIndexada {
 	protected String nombre;
 	protected String dni;
 	protected LocalDate fechaNacimiento;

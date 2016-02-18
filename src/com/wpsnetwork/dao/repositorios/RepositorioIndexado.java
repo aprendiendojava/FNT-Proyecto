@@ -3,7 +3,7 @@ package com.wpsnetwork.dao.repositorios;
 import java.util.Observable;
 
 import com.wpsnetwork.dao.interfaces.DaoIndexado;
-import com.wpsnetwork.datos.entidades.EntidadIndexada;
+import com.wpsnetwork.model.entidad.EntidadIndexada;
 
 public abstract class RepositorioIndexado<ENTIDAD extends EntidadIndexada> extends Observable implements DaoIndexado<ENTIDAD> {
 	private final Class<ENTIDAD> claseRepositorio;

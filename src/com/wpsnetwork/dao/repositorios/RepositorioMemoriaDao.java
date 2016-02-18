@@ -9,7 +9,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.wpsnetwork.datos.entidades.EntidadIndexada;
+import com.wpsnetwork.model.entidad.EntidadIndexada;
 
 public class RepositorioMemoriaDao<ENTIDAD extends EntidadIndexada> extends RepositorioIndexado<ENTIDAD> {
 	private static final Logger logDao = LogManager.getLogger( RepositorioMemoriaDao.class );
@@ -48,13 +48,13 @@ public class RepositorioMemoriaDao<ENTIDAD extends EntidadIndexada> extends Repo
 		notifyObservers(object);
 	}
 
-	public void update( ENTIDAD object ) {
-		ENTIDAD before = datosEnMemoria.put( object.getIndex(), object );
-		logDao.trace((( before==null )?"":" # BEFORE: # " + before.getClass().getTypeName() + ": " + before )
-					+ " # AFTER: # " + object.getClass().getTypeName() + ": " + object );
+	public void update( ENTIDAD original, ENTIDAD updated ) {
+		datosEnMemoria.put( original.getIndex(), updated );
+		logDao.trace((( original==null )?"":" # BEFORE: # " + original.getClass().getTypeName() + ": " + original )
+					+ " # AFTER: # " + updated.getClass().getTypeName() + ": " + updated );
 
 		setChanged();
-		notifyObservers(object);
+		notifyObservers(updated);
 	}
 
 	public void delete( ENTIDAD object ) {

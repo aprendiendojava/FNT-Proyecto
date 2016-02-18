@@ -1,9 +1,10 @@
 package com.wpsnetwork.entidades;
 
-import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 
-@Entity
-public abstract class Autor {
-	protected Integer id;
+import com.wpsnetwork.model.entidad.EntidadIndexada;
+
+@MappedSuperclass
+public abstract class Autor extends EntidadIndexada{
 	protected String nombre;
 }

@@ -1,5 +1,7 @@
 package com.wpsnetwork.dao.interfaces;
 
+import java.io.Serializable;
+
 public interface Indexado {
-	public Object getIndex();
+	public Serializable getIndex();
 }

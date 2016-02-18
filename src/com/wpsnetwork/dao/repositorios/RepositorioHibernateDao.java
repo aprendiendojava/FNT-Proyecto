@@ -12,7 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import com.wpsnetwork.datos.entidades.EntidadIndexada;
+import com.wpsnetwork.model.entidad.EntidadIndexada;
 
 public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends RepositorioIndexado<ENTIDAD> {
 	public RepositorioHibernateDao(Class<ENTIDAD> claseEntidad) {
@@ -27,6 +27,7 @@ public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends Re
 			s = sf.openSession();
 		} catch( Exception e ) {
 			System.out.println("NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+			e.printStackTrace();
 		}
 	}
 
@@ -37,6 +38,7 @@ public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends Re
 		return (ENTIDAD) s.get(getClaseRepositorio(), id);
 		} catch ( Exception e ) {
 			System.out.println("NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -50,18 +52,21 @@ public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends Re
 		repositoryChanged(object);
 		} catch ( Exception e ) {
 			System.out.println("NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void update(ENTIDAD object) {
+	public void update(ENTIDAD original, ENTIDAD updated) {
 		try {
 		s.beginTransaction();
-		s.update(object);
+		updated.setId((Integer) original.getIndex());
+		s.update(updated);
 		s.getTransaction().commit();
-		repositoryChanged(object);
+		repositoryChanged(updated);
 		} catch ( Exception e ) {
 			System.out.println("NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+			e.printStackTrace();
 		}
 	}
 
@@ -74,6 +79,7 @@ public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends Re
 		repositoryChanged(object);
 		} catch (Exception e) {
 			System.out.println("NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+			e.printStackTrace();
 		}
 	}
 
@@ -84,6 +90,7 @@ public class RepositorioHibernateDao<ENTIDAD extends EntidadIndexada> extends Re
 		return s.createQuery("FROM " + getClaseRepositorio().getSimpleName()).list();
 		} catch (Exception e){
 			System.out.println("NO SE HA PODIDO CONECTAR CON LA BASE DE DATOS");
+			e.printStackTrace();
 			return new ArrayList<>();
 		}
 	}

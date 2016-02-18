@@ -1,26 +1,26 @@
-package com.wpsnetwork.factorias;
+package com.wpsnetwork.model.factoria;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.wpsnetwork.dao.interfaces.DaoIndexado;
-import com.wpsnetwork.datos.entidades.Autor;
-import com.wpsnetwork.datos.entidades.EntidadIndexada;
-import com.wpsnetwork.datos.entidades.Libro;
+import com.wpsnetwork.datos.entidades.AutorDto;
+import com.wpsnetwork.datos.entidades.CategoriaLibroDto;
+import com.wpsnetwork.datos.entidades.LibroDto;
+import com.wpsnetwork.datos.entidades.PersonaDto;
+import com.wpsnetwork.datos.entidades.PrestamoDto;
 import com.wpsnetwork.dto.Dto;
-import com.wpsnetwork.datos.entidades.CategoriaLibro;
-import com.wpsnetwork.datos.entidades.Persona;
-import com.wpsnetwork.datos.entidades.Prestamo;
+import com.wpsnetwork.model.entidad.EntidadIndexada;
 
 public final class FactoriaDto {
 	private static Map<String,Class<? extends EntidadIndexada>> entidades = new HashMap<>();
 	static {
-		entidades.put( "AUTOR", Autor.class );
-		entidades.put( "CATEGORIA", CategoriaLibro.class );
-		entidades.put( "LIBRO", Libro.class );
-		entidades.put( "PERSONA", Persona.class );
-		entidades.put( "PRESTAMO", Prestamo.class );
+		entidades.put( "AUTOR", AutorDto.class );
+		entidades.put( "CATEGORIA", CategoriaLibroDto.class );
+		entidades.put( "LIBRO", LibroDto.class );
+		entidades.put( "PERSONA", PersonaDto.class );
+		entidades.put( "PRESTAMO", PrestamoDto.class );
 	}
 
 	private static <E extends EntidadIndexada> Class<E> getEntidad( String entidad ) {

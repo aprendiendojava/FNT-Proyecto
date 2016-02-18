@@ -1,9 +1,7 @@
 package com.wpsnetwork.entidades;
 
-import javax.persistence.Entity;
+import com.wpsnetwork.model.entidad.EntidadIndexada;
 
-@Entity
-public abstract class CategoriaLibro {
-	protected Integer id;
+public abstract class CategoriaLibro extends EntidadIndexada {
 	protected String nombre;
 }

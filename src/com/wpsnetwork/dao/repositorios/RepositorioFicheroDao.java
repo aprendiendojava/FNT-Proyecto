@@ -10,7 +10,7 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
-import com.wpsnetwork.datos.entidades.EntidadIndexada;
+import com.wpsnetwork.model.entidad.EntidadIndexada;
 
 public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends RepositorioIndexado<ENTIDAD> {
 	private final Path almacen;
@@ -47,18 +47,27 @@ public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends Repo
 		if ( object.getIndex() == null )
 			assignId( object );
 
-		try {
-			db.setProperty( object.getIndex().toString(), new Gson().toJson( object ));
-			db.store( Files.newBufferedWriter( almacen ), "" );
-			repositoryChanged( object );
-		} catch ( IOException e ) {
-			e.printStackTrace();
-		}
+		insertOrUpdate( object, object );		
 	}
 
 	@Override
-	public void update(ENTIDAD object) {
-		insert(object);
+	public void update(ENTIDAD original, ENTIDAD updated) {
+		ENTIDAD saved = get(original.getIndex());
+		if( saved == null )
+			throw new RuntimeException();
+		else {
+			insertOrUpdate(original, updated);
+		}
+	}
+
+	private void insertOrUpdate( ENTIDAD original, ENTIDAD updated ) {
+		try {
+			db.setProperty( original.getIndex().toString(), new Gson().toJson( updated ));
+			db.store( Files.newBufferedWriter( almacen ), "" );
+			repositoryChanged( updated );
+		} catch ( IOException e ) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

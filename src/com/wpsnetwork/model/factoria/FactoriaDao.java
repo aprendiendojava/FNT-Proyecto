@@ -1,4 +1,4 @@
-package com.wpsnetwork.factorias;
+package com.wpsnetwork.model.factoria;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import com.wpsnetwork.dao.interfaces.Dao;
 import com.wpsnetwork.dao.repositorios.RepositorioFicheroDao;
 import com.wpsnetwork.dao.repositorios.RepositorioHibernateDao;
 import com.wpsnetwork.dao.repositorios.RepositorioMemoriaDao;
-import com.wpsnetwork.datos.entidades.EntidadIndexada;
+import com.wpsnetwork.model.entidad.EntidadIndexada;
 
 public class FactoriaDao {
 	private static Class<? extends Dao> defaultDao;
