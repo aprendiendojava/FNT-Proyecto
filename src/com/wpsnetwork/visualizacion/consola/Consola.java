@@ -56,6 +56,8 @@ public final class Consola {
 			new LibroDto( "La amabilidad de los extraños", 90, "Editorial2", 1 )
 		).forEach( l -> libros.insert( l ));
 		logConsola.trace( imprimir( libros ));
+//		cortazar.addLibro(libros.get(3));
+
 
 		libros.delete( libros.getAll().get(1));
 		logConsola.trace( imprimir( libros ));

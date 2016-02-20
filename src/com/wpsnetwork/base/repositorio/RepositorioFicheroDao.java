@@ -7,9 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wpsnetwork.base.entidad.EntidadIndexada;
 
 public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends RepositorioIndexado<ENTIDAD> {
@@ -35,7 +34,7 @@ public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends Repo
 	@Override
 	public ENTIDAD get( Serializable id) {
 		try {
-			return new Gson().fromJson((String) db.get(""+id), getClaseRepositorio());
+			return new ObjectMapper().reader().treeToValue(new ObjectMapper().reader().readTree((String)db.get(""+id)), getClaseRepositorio());
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			return null;
@@ -62,7 +61,7 @@ public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends Repo
 
 	private void insertOrUpdate( ENTIDAD original, ENTIDAD updated ) {
 		try {
-			db.setProperty( original.getIndex().toString(), new Gson().toJson( updated ));
+			db.setProperty( original.getIndex().toString(), new ObjectMapper().valueToTree( updated ).toString());
 			db.store( Files.newBufferedWriter( almacen ), "" );
 			repositoryChanged( updated );
 		} catch ( IOException e ) {
@@ -83,16 +82,6 @@ public class RepositorioFicheroDao<ENTIDAD extends EntidadIndexada> extends Repo
 
 	@Override
 	public List<ENTIDAD> getAll() {
-		return db.values()
-				.stream()
-				.map(o-> {
-			try {
-				return (ENTIDAD) new Gson()
-						.fromJson((String) o, getClaseRepositorio());
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new RuntimeException();
-			}
-		}).collect(Collectors.toList());
+		return null; //TODO
 	}
 }
