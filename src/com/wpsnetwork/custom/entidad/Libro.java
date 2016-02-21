@@ -2,10 +2,10 @@ package com.wpsnetwork.custom.entidad;
 
 import javax.persistence.MappedSuperclass;
 
-import com.wpsnetwork.base.entidad.EntidadIndexada;
+import com.wpsnetwork.base.entity.Table;
 
 @MappedSuperclass
-public abstract class Libro extends EntidadIndexada {
+public abstract class Libro extends Table {
 	protected String titulo;
 	protected int    paginas;
 	protected String editorial;

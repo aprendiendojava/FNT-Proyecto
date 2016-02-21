@@ -4,10 +4,10 @@ import java.time.LocalDate;
 
 import javax.persistence.MappedSuperclass;
 
-import com.wpsnetwork.base.entidad.EntidadIndexada;
+import com.wpsnetwork.base.entity.Table;
 
 @MappedSuperclass
-public abstract class Persona extends EntidadIndexada {
+public abstract class Persona extends Table {
 	protected String nombre;
 	protected String dni;
 	protected LocalDate fechaNacimiento;

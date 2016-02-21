@@ -1,4 +1,4 @@
-package com.wpsnetwork.base.entidad;
+package com.wpsnetwork.base.entity;
 
 import java.io.Serializable;
 
@@ -8,18 +8,22 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wpsnetwork.base.interfaz.Indexado;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @MappedSuperclass
-public abstract class EntidadIndexada implements Indexado {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public abstract class Table implements Indexed {
 	@Id
 	@GeneratedValue( strategy=GenerationType.TABLE )
-	private Integer id;
+	protected Integer id;
 
 	@Override
 	public String toString() {
-		ObjectMapper om = new ObjectMapper();
+		ObjectMapper om = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 		om.setVisibility(
 			om.getSerializationConfig()
 			.getDefaultVisibilityChecker()
@@ -27,11 +31,16 @@ public abstract class EntidadIndexada implements Indexado {
 				.withGetterVisibility(Visibility.NONE)
 				.withSetterVisibility(Visibility.NONE)
 				.withCreatorVisibility(Visibility.NONE));
-		return om.valueToTree(this).toString();
+		try {
+			return om.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			return "";
+		}
 	}
 
-	public void setId( Integer id ) {
-		this.id = id;
+	public void setIndex( Serializable id ) {
+		this.id = (Integer)id;
 	}
 
 	@Override

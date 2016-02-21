@@ -2,9 +2,9 @@ package com.wpsnetwork.custom.entidad;
 
 import javax.persistence.MappedSuperclass;
 
-import com.wpsnetwork.base.entidad.EntidadIndexada;
+import com.wpsnetwork.base.entity.Table;
 
 @MappedSuperclass
-public abstract class CategoriaLibro extends EntidadIndexada {
+public abstract class CategoriaLibro extends Table {
 	protected String nombre;
 }

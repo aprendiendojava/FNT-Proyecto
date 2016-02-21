@@ -5,65 +5,60 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.wpsnetwork.base.FactoriaDao;
-import com.wpsnetwork.base.interfaz.DaoIndexado;
-import com.wpsnetwork.custom.dto.AutorDto;
-import com.wpsnetwork.custom.dto.CategoriaLibroDto;
-import com.wpsnetwork.custom.dto.LibroDto;
-import com.wpsnetwork.custom.repositorio.RepositorioAutoresMemoriaDao;
+import com.wpsnetwork.base.repository.Dao;
+import com.wpsnetwork.custom.dto.Autor;
+import com.wpsnetwork.custom.dto.CategoriaLibro;
+import com.wpsnetwork.custom.dto.Libro;
 
 public final class Consola {
 	private static final Logger logConsola = LogManager.getLogger( Consola.class );
 
 	public static void main( String...strings ) {
-		DaoIndexado<AutorDto> autores = FactoriaDao.getInstance( RepositorioAutoresMemoriaDao.class, AutorDto.class );
-		logConsola.trace( imprimir( autores ));
-
-
-
-
-		DaoIndexado<AutorDto> autores2 = FactoriaDao.forEntity( AutorDto.class );
-		autores.getAll().forEach( a -> autores2.insert( a ));
-		logConsola.trace( imprimir( autores2 ));
-		logConsola.trace( imprimir( autores ));
-
-		AutorDto cortazar = new AutorDto( "Julio Cortazar" );
+		Dao<Autor> autores2 = FactoriaDao.forEntity( Autor.class );
+		Autor cortazar = new Autor( "Julio Cortazar" );
+		cortazar.getLibros().add(new Libro( "Rayuela", 400, "Editorial1", 14 ));
 		autores2.insert( cortazar );
+		cortazar.getLibros().add(new Libro( "El perseguidor", 100, "Editorial1", 8 ));
 		logConsola.trace( imprimir( autores2 ));
 
-		autores2.update( cortazar, new AutorDto( "Julio Cortázar" ));
+		autores2.update( cortazar, new Autor( "Julio Cortázar" ));
 		logConsola.trace( imprimir( autores2 ));
 
 
 
 
-		DaoIndexado<CategoriaLibroDto> categorias = FactoriaDao.forEntity( CategoriaLibroDto.class );
+		Dao<CategoriaLibro> categorias = FactoriaDao.forEntity( CategoriaLibro.class );
 		Arrays.asList(
-			new CategoriaLibroDto( "Novela" ),
-			new CategoriaLibroDto( "Poesía" ),
-			new CategoriaLibroDto( "Drama" ),
-			new CategoriaLibroDto( "Ensayo" )
+			new CategoriaLibro( "Novela" ),
+			new CategoriaLibro( "Poesía" ),
+			new CategoriaLibro( "Drama" ),
+			new CategoriaLibro( "Ensayo" )
 		).forEach( cl -> categorias.insert( cl ));
 		logConsola.trace( imprimir( categorias ));
 
 
 
 
-		DaoIndexado<LibroDto> libros = FactoriaDao.forEntity( LibroDto.class );
+		Dao<Libro> libros = FactoriaDao.forEntity( Libro.class );
 		Arrays.asList(
-			new LibroDto( "Moby Dick", 300, "Astral", 34 ),
-			new LibroDto( "Las flores del mal", 140, "Editorial3", 11 ),
-			new LibroDto( "Rayuela", 400, "Editorial1", 14 ),
-			new LibroDto( "La amabilidad de los extraños", 90, "Editorial2", 1 )
-		).forEach( l -> libros.insert( l ));
+			new Libro( "Moby Dick", 300, "Astral", 34 ),
+			new Libro( "Las flores del mal", 140, "Editorial3", 11 ),
+			new Libro( "La amabilidad de los extraños", 90, "Editorial2", 1 )
+		).forEach( l -> {
+			libros.insert( l );
+			l.getAutores().add(autores2.get(1));
+			l.getAutores().add(new Autor("Kurt Vonnegut"));
+		});
 		logConsola.trace( imprimir( libros ));
-//		cortazar.addLibro(libros.get(3));
+
+
 
 
 		libros.delete( libros.getAll().get(1));
 		logConsola.trace( imprimir( libros ));
 	}
 
-	private static String imprimir( DaoIndexado<?> objetos ) {
+	private static String imprimir( Dao<?> objetos ) {
 		return objetos.getAll().stream()
 				.map(l->l.toString())
 				.reduce((texto,l) -> texto + l.toString()).orElse("Lista vacía");
