@@ -1,4 +1,4 @@
-package com.wpsnetwork.custom.entidad;
+package com.wpsnetwork.custom.entity;
 
 import java.time.LocalDate;
 

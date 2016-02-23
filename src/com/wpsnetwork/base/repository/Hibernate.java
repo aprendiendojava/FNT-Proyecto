@@ -2,8 +2,14 @@ package com.wpsnetwork.base.repository;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
+
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.EntityMode;
@@ -14,7 +20,7 @@ import org.hibernate.cfg.Configuration;
 
 import com.wpsnetwork.base.entity.Table;
 
-public class Hibernate<ENTIDAD extends Table> implements Dao<ENTIDAD> {
+public class Hibernate<ENTIDAD extends Table, DTO extends ENTIDAD> implements Dao<ENTIDAD> {
 	private final Class<ENTIDAD> claseRepositorio;
 
 	public Hibernate(Class<ENTIDAD> claseEntidad) {
@@ -36,37 +42,108 @@ public class Hibernate<ENTIDAD extends Table> implements Dao<ENTIDAD> {
 
 	@Override
 	public void insert(ENTIDAD object) {
-		s.beginTransaction();
-		s.save(object);
-		s.getTransaction().commit();
+		System.out.println("INSERTANDO:");
+		System.out.println(object);		
+		try {
+			s.beginTransaction();
+			s.save(object);
+			s.getTransaction().commit();
+			System.out.println("INSERTADO:");
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			s.getTransaction().rollback();
+		}
+		
 	}
 
 	@Override
 	public void update(ENTIDAD original, ENTIDAD updated) {
-		s.beginTransaction();
-		s.flush();
-		s.evict(original);
-		s.getTransaction().commit();
+		System.out.println("ACTUALIZANDO:");
+		System.out.println(original);
+		try {
+			s.beginTransaction();
+			s.flush();
+			s.evict(original);
+			s.getTransaction().commit();
 
-		StatelessSession ss = sf.openStatelessSession();
-		ss.beginTransaction();
-		updated.setIndex(original.getIndex());
-		ss.update(updated);
-		ss.getTransaction().commit();
-		ss.close();
+			StatelessSession ss = sf.openStatelessSession();
+			try {
+				ss.beginTransaction();
+				updated.setIndex(original.getIndex());
+				ss.update(updated);
+				ss.getTransaction().commit();
+			} catch( Exception e ) {
+				ss.getTransaction().rollback();
+			} finally {
+				ss.close();
+			}
+		} catch (Exception e ) {
+			e.printStackTrace();
+			s.getTransaction().rollback();
+		}
+		System.out.println("ACTUALIZADO A:");
+		System.out.println(updated);
 	}
 
 	@Override
 	public void delete(ENTIDAD object) {
-		s.beginTransaction();
-		s.delete(object);
-		s.getTransaction().commit();
+		System.out.println("BORRANDO");
+		System.out.println(object);
+
+		List<Field> fs = Arrays.asList( object.getClass().getDeclaredFields());
+		Stream<Field> fss = fs.stream().filter(f->{
+			boolean b = f.isAnnotationPresent(ManyToMany.class)||f.isAnnotationPresent(OneToMany.class);
+			return b;
+		});
+		fss.forEach(f->{
+			f.setAccessible(true);
+			try {
+				Collection<ENTIDAD> c = (Collection<ENTIDAD>) f.get(object);
+				c.stream().forEach( t->
+				{
+					ENTIDAD t2 = t;
+					Arrays.asList( t.getClass().getDeclaredFields())
+					.stream().filter(f2-> f2.isAnnotationPresent(ManyToMany.class)||f2.isAnnotationPresent(OneToMany.class))
+					.forEach(f3->{
+						f3.setAccessible(true);
+						
+						try {
+							Collection<ENTIDAD> c2 = (Collection<ENTIDAD>) f3.get(t2);
+							c2.remove(object);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					});
+				});
+			((Collection)c).clear();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		});
+		try {
+			s.beginTransaction();
+			s.flush();
+			s.getTransaction().commit();
+			s.beginTransaction();
+			s.delete(object);
+			s.getTransaction().commit();
+			System.out.println("BORRADO:");			
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			s.getTransaction().rollback();
+		}
+
 	}
 
 	@Override
 	public List<ENTIDAD> getAll() {
+		try {
 			s.beginTransaction();
 			return s.createQuery( "FROM " + claseRepositorio.getSimpleName()).list();
+		} catch( Exception e ) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
 	}
 
 	private static class ReflectiveInstantiator extends EmptyInterceptor {

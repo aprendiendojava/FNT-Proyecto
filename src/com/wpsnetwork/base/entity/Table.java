@@ -27,7 +27,7 @@ public abstract class Table implements Indexed {
 		om.setVisibility(
 			om.getSerializationConfig()
 			.getDefaultVisibilityChecker()
-				.withFieldVisibility(Visibility.PROTECTED_AND_PUBLIC)
+				.withFieldVisibility(Visibility.ANY)
 				.withGetterVisibility(Visibility.NONE)
 				.withSetterVisibility(Visibility.NONE)
 				.withCreatorVisibility(Visibility.NONE));

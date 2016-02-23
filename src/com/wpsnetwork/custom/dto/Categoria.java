@@ -9,18 +9,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-
 @Entity
-public class Autor extends com.wpsnetwork.custom.entity.Autor {
+public class Categoria extends com.wpsnetwork.custom.entity.Categoria {
 	@ManyToMany( cascade=CascadeType.ALL )
-	@JoinTable( name="libro_autor", joinColumns=@JoinColumn( name="idAutor" ), inverseJoinColumns=@JoinColumn( name="idLibro"))
+	@JoinTable( name="categoria_libro", joinColumns=@JoinColumn( name="idLibro" ), inverseJoinColumns=@JoinColumn( name="idCategoria" ))
 	private Set<Libro> libros = new HashSet<>();
 
-	public Autor( String nombre ) {
+	public Categoria( String nombre ) {
 		this.nombre = nombre;
-	}
-
-	public Set<Libro> getLibros() {
-		return libros;
 	}
 }
