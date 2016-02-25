@@ -23,10 +23,10 @@ public final class Consola {
 
 		autores2.insert( cortazar );
 		cortazar.getLibros().add(new Libro( "El perseguidor", 100, "Editorial1", 8 ));
-		//logConsola.trace( imprimir( autores2 ));
+//		logConsola.trace( imprimir( autores2 ));
 
 		autores2.update( cortazar, new Autor( "Julio Cortázar" ));
-		//logConsola.trace( imprimir( autores2 ));
+//		logConsola.trace( imprimir( autores2 ));
 
 
 
@@ -38,7 +38,7 @@ public final class Consola {
 			new Categoria( "Drama" ),
 			new Categoria( "Ensayo" )
 		).forEach( cl -> categorias.insert( cl ));
-		//logConsola.trace( imprimir( categorias ));
+//		logConsola.trace( imprimir( categorias ));
 
 
 
@@ -54,18 +54,19 @@ public final class Consola {
 			l.getAutores().add(autores2.get(1));
 			l.getAutores().add(vonnegut);
 		});
-		//logConsola.trace( imprimir( libros ));
+//		logConsola.trace( imprimir( libros ));
 
 
 
 
 		try {
-			libros.delete( libros.getAll().get(1));
+			//libros.delete( libros.getAll().get(1));
+			libros.update(libros.getAll().get(1), new Libro("CAMBIADO", 3, "EDITORIAL", 2));
 		} catch( Exception e ) {
 			e.printStackTrace();
 		}
 		
-		//logConsola.trace( imprimir( libros ));
+//		logConsola.trace( imprimir( libros ));
 
 
 
@@ -78,7 +79,7 @@ public final class Consola {
 
 		Dao<Prestamo> prestamos = FactoriaDao.forEntity(Prestamo.class);
 		prestamos.insert(new Prestamo(libros.getAll().get(1),new Persona("Persona1", "DNI1", LocalDate.now(), "Direccion1", "0000000", "Provincia1", "Pasi2", 0)));
-		//logConsola.trace(prestamos);
+//		logConsola.trace(prestamos);
 		
 	}
 

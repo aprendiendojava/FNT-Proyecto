@@ -16,10 +16,14 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 @MappedSuperclass
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+
+/* La anotación anterior previene que al generar el JSON de una entidad (y sus relaciones) se entre en un bucle infinito.
+ Básicamente indica que para cada objeto sólo se generará el JSON una única vez, donde ID es distintivo de cada objeto. */
+
 public abstract class Table implements Indexed {
 	@Id
 	@GeneratedValue( strategy=GenerationType.TABLE )
-	protected Integer id;
+	private Integer id;
 
 	@Override
 	public String toString() {

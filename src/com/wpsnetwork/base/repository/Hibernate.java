@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.EntityMode;
 import org.hibernate.Session;
@@ -21,6 +23,7 @@ import org.hibernate.cfg.Configuration;
 import com.wpsnetwork.base.entity.Table;
 
 public class Hibernate<ENTIDAD extends Table, DTO extends ENTIDAD> implements Dao<ENTIDAD> {
+	private static final Logger logDao = LogManager.getLogger( Hibernate.class );
 	private final Class<ENTIDAD> claseRepositorio;
 
 	public Hibernate(Class<ENTIDAD> claseEntidad) {
@@ -42,15 +45,15 @@ public class Hibernate<ENTIDAD extends Table, DTO extends ENTIDAD> implements Da
 
 	@Override
 	public void insert(ENTIDAD object) {
-		System.out.println("INSERTANDO:");
-		System.out.println(object);		
+		logDao.trace("INSERTANDO:");
+		logDao.trace(object);		
 		try {
 			s.beginTransaction();
 			s.save(object);
 			s.getTransaction().commit();
-			System.out.println("INSERTADO:");
+			logDao.trace("INSERTADO CORRECTAMENTE.");
 		} catch ( Exception e ) {
-			e.printStackTrace();
+			logDao.trace("ERROR AL INSERTAR: " + e );
 			s.getTransaction().rollback();
 		}
 		
@@ -58,8 +61,8 @@ public class Hibernate<ENTIDAD extends Table, DTO extends ENTIDAD> implements Da
 
 	@Override
 	public void update(ENTIDAD original, ENTIDAD updated) {
-		System.out.println("ACTUALIZANDO:");
-		System.out.println(original);
+		logDao.trace("ACTUALIZANDO:");
+		logDao.trace(original);
 		try {
 			s.beginTransaction();
 			s.flush();
@@ -72,24 +75,25 @@ public class Hibernate<ENTIDAD extends Table, DTO extends ENTIDAD> implements Da
 				updated.setIndex(original.getIndex());
 				ss.update(updated);
 				ss.getTransaction().commit();
+				logDao.trace("ACTUALIZADO CORRECTAMENTE COMO:");
+				logDao.trace(updated);
 			} catch( Exception e ) {
 				ss.getTransaction().rollback();
 			} finally {
 				ss.close();
 			}
 		} catch (Exception e ) {
-			e.printStackTrace();
+			logDao.trace("ERROR AL ACTUALIZAR: " + e );
 			s.getTransaction().rollback();
 		}
-		System.out.println("ACTUALIZADO A:");
-		System.out.println(updated);
 	}
 
 	@Override
 	public void delete(ENTIDAD object) {
-		System.out.println("BORRANDO");
-		System.out.println(object);
+		logDao.trace("PREPARANDO EL BORRADO DE:");
+		logDao.trace(object);
 
+		logDao.trace("BORRANDO REFERENCIAS AL OBJETO.");
 		List<Field> fs = Arrays.asList( object.getClass().getDeclaredFields());
 		Stream<Field> fss = fs.stream().filter(f->{
 			boolean b = f.isAnnotationPresent(ManyToMany.class)||f.isAnnotationPresent(OneToMany.class);
@@ -111,25 +115,22 @@ public class Hibernate<ENTIDAD extends Table, DTO extends ENTIDAD> implements Da
 							Collection<ENTIDAD> c2 = (Collection<ENTIDAD>) f3.get(t2);
 							c2.remove(object);
 						} catch (Exception e) {
-							e.printStackTrace();
+							logDao.trace("ERROR AL BORRAR LAS REFERENCIAS AL OBJETO: " + e );
 						}
 					});
 				});
 			((Collection)c).clear();
-			} catch (Exception e1) {
-				e1.printStackTrace();
+			} catch (Exception e) {
+				logDao.trace("ERROR AL BORRAR LAS REFERENCIAS AL OBJETO: " + e );
 			}
 		});
 		try {
 			s.beginTransaction();
-			s.flush();
-			s.getTransaction().commit();
-			s.beginTransaction();
 			s.delete(object);
 			s.getTransaction().commit();
-			System.out.println("BORRADO:");			
+			logDao.trace("BORRADO CORRECTAMENTE.");			
 		} catch ( Exception e ) {
-			e.printStackTrace();
+			logDao.trace("ERROR AL BORRAR EL OBJETO: " + e );
 			s.getTransaction().rollback();
 		}
 
@@ -137,11 +138,13 @@ public class Hibernate<ENTIDAD extends Table, DTO extends ENTIDAD> implements Da
 
 	@Override
 	public List<ENTIDAD> getAll() {
+		logDao.trace("CONSULTANDO TODOS LOS OBJETOS " + claseRepositorio.getSimpleName() + ":");
 		try {
 			s.beginTransaction();
+			logDao.trace("CONSULTADO CORRECTAMENTE.");
 			return s.createQuery( "FROM " + claseRepositorio.getSimpleName()).list();
 		} catch( Exception e ) {
-			e.printStackTrace();
+			logDao.trace("ERROR AL CONSULTAR LA LISTA DE OBJETOS " + claseRepositorio.getSimpleName() + ": " + e );
 			return new ArrayList<>();
 		}
 	}

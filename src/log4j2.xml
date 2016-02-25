@@ -15,7 +15,7 @@
 		<PatternLayout pattern="%d %-5p  [%t] %c{2} (%F:%L) (Método: %M) - %m%n" />
 	</File>
 
-	<File name="FileLogDto" filename="logs/dto.txt" append="true">
+	<File name="FileLogEntity" filename="logs/entity.txt" append="true">
 		<PatternLayout pattern="%d %-5p  [%t] %c{2} (%F:%L) (Método: %M) - %m%n" />
 	</File>
 
@@ -28,11 +28,11 @@
 		<AppenderRef ref="FileLogConsola" />
 		<AppenderRef ref="LogConsola" />
 	</Logger>
-	<Logger name="com.wpsnetwork.dao" level="trace">
+	<Logger name="com.wpsnetwork.base.repository" level="trace">
 		<AppenderRef ref="FileLogDao" />
 	</Logger>
-	<Logger name="com.wpsnetwork.dto" level="trace">
-		<AppenderRef ref="FileLogDto" />
+	<Logger name="com.wpsnetwork.custom" level="trace">
+		<AppenderRef ref="FileLogEntity" />
 	</Logger>
 	
 	<Root level="trace">
